@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Daily Beauty News</title>
+<style>
+/* ─────────────────────────────────────────────────────────────
+   Daily Beauty News — deal intelligence
+   Design language adapted from L'Oréal Groupe: stark black on white,
+   geometric sans, square corners, multi-column card grid, and a
+   finance-forward ticker rail. Colour comes from data, not decoration.
+   ───────────────────────────────────────────────────────────── */
+:root{
+  --paper:#FFFFFF;
+  --surface:#FFFFFF;
+  --fill:#F5F5F4;
+  --ink:#000000;
+  --ink-2:#5C5C5C;
+  --ink-3:#8A8A8A;
+  --line:#E3E3E1;
+  --rule:#000000;
+  --invert-bg:#000000;
+  --invert-ink:#FFFFFF;
+  --up:#0F6B41;
+  --down:#B3202E;
+  --geo:Futura,"Avenir Next",Avenir,"Century Gothic","URW Gothic","Trebuchet MS",sans-serif;
+  --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#0B0B0B; --surface:#131313; --fill:#191919;
+    --ink:#FFFFFF; --ink-2:#ABABAB; --ink-3:#7E7E7E;
+    --line:#2A2A2A; --rule:#FFFFFF;
+    --invert-bg:#FFFFFF; --invert-ink:#000000;
+    --up:#5FBF8E; --down:#E8737F;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0B0B0B; --surface:#131313; --fill:#191919;
+  --ink:#FFFFFF; --ink-2:#ABABAB; --ink-3:#7E7E7E;
+  --line:#2A2A2A; --rule:#FFFFFF;
+  --invert-bg:#FFFFFF; --invert-ink:#000000;
+  --up:#5FBF8E; --down:#E8737F;
+}
+:root[data-theme="light"]{
+  --paper:#FFFFFF; --surface:#FFFFFF; --fill:#F5F5F4;
+  --ink:#000000; --ink-2:#5C5C5C; --ink-3:#8A8A8A;
+  --line:#E3E3E1; --rule:#000000;
+  --invert-bg:#000000; --invert-ink:#FFFFFF;
+  --up:#0F6B41; --down:#B3202E;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+.wrap{max-width:1280px;margin:0 auto;padding:0 36px 88px}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* ─── Ticker rail: inverted, finance-forward (L'Oréal homepage cue) ─── */
+.ticker{
+  background:var(--invert-bg);color:var(--invert-ink);
+  overflow:hidden;white-space:nowrap;border-bottom:1px solid var(--invert-bg);
+}
+.ticker-track{display:inline-flex;align-items:center;will-change:transform;animation:slide 46s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-item{
+  display:inline-flex;align-items:baseline;gap:10px;
+  padding:11px 0;margin-right:44px;
+  font-family:var(--geo);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+}
+.ticker-item .tk-co{font-weight:700}
+.ticker-item .tk-v{font-family:var(--mono);letter-spacing:.04em;font-size:11.5px;opacity:.95}
+.ticker-item .tk-v.up{color:var(--up)}
+.ticker-item .tk-v.down{color:var(--down)}
+.ticker-sep{opacity:.4;margin-right:44px}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── Masthead ─── */
+.masthead{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:36px;flex-wrap:wrap;padding:46px 0 20px;
+  border-bottom:2px solid var(--rule);
+}
+.brand{max-width:60ch}
+.eyebrow{
+  font-family:var(--geo);font-size:10px;letter-spacing:.32em;
+  text-transform:uppercase;font-weight:700;color:var(--ink-2);
+}
+.logo{
+  font-family:var(--geo);font-weight:500;
+  font-size:clamp(36px,5.6vw,60px);line-height:.98;
+  letter-spacing:-.015em;margin:14px 0 0;text-transform:uppercase;text-wrap:balance;
+}
+.brand .tag{color:var(--ink-2);font-size:14px;margin:14px 0 0;max-width:54ch}
+.status{
+  display:flex;align-items:center;gap:9px;flex:none;padding-bottom:6px;
+  font-family:var(--geo);font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-2);
+}
+.status .dot{width:6px;height:6px;background:var(--ink);flex:none;animation:blink 2.6s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.status b{color:var(--ink);font-weight:700}
+
+/* ─── KPI band ─── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.kpi{padding:26px 28px 24px;border-left:1px solid var(--line)}
+.kpi:first-child{border-left:0;padding-left:0}
+.kpi .fig{
+  font-family:var(--mono);font-size:32px;line-height:1;
+  letter-spacing:-.03em;font-variant-numeric:tabular-nums;
+}
+.kpi .lab{
+  margin-top:14px;font-family:var(--geo);font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink);font-weight:700;
+}
+.kpi .sub{margin-top:5px;color:var(--ink-3);font-size:11.5px}
+
+/* ─── Sticky filter bar ─── */
+.toolbar{
+  position:sticky;top:0;z-index:20;background:var(--paper);
+  border-bottom:1px solid var(--line);margin-bottom:6px;
+}
+.filt{display:flex;flex-direction:column;gap:9px;padding:14px 0}
+.filt-row{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.filt-lab{
+  font-family:var(--geo);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:700;width:64px;flex:none;
+}
+.pill{
+  border:1px solid var(--line);background:transparent;border-radius:0;
+  padding:7px 14px;font-family:var(--geo);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:600;color:var(--ink-2);cursor:pointer;
+  transition:background .15s,color .15s,border-color .15s;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.pill:hover:not(:disabled){border-color:var(--ink);color:var(--ink)}
+.pill[aria-pressed="true"]{background:var(--invert-bg);color:var(--invert-ink);border-color:var(--invert-bg)}
+.pill .n{font-family:var(--mono);font-size:10px;letter-spacing:0;opacity:.7;font-variant-numeric:tabular-nums}
+.pill:disabled{opacity:.3;cursor:default}
+.selwrap{position:relative;display:inline-flex}
+.selwrap select{
+  appearance:none;background:transparent;border:1px solid var(--line);border-radius:0;
+  font-family:var(--geo);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  font-weight:600;color:var(--ink);padding:8px 30px 8px 14px;cursor:pointer;
+}
+.selwrap::after{
+  content:"";position:absolute;right:13px;top:50%;width:5px;height:5px;margin-top:-4px;
+  border-right:1.5px solid var(--ink-3);border-bottom:1.5px solid var(--ink-3);
+  transform:rotate(45deg);pointer-events:none;
+}
+.searchbox{
+  flex:1;min-width:210px;display:flex;align-items:center;gap:9px;
+  border:1px solid var(--line);padding:7px 14px;
+}
+.searchbox:focus-within{border-color:var(--ink)}
+.searchbox svg{color:var(--ink-3);flex:none}
+.searchbox input{border:0;background:none;font:inherit;font-size:13px;color:var(--ink);outline:none;width:100%}
+.searchbox input::placeholder{color:var(--ink-3)}
+.reset{
+  margin-left:auto;background:none;border:0;font-family:var(--geo);font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--ink);
+  cursor:pointer;text-decoration:underline;text-underline-offset:4px;padding:4px 2px;
+}
+.reset[hidden]{display:none}
+
+/* ─── Section heads ─── */
+.sec-head{
+  display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
+  margin:52px 0 0;padding-bottom:11px;border-bottom:2px solid var(--rule);
+}
+.sec-head h2{
+  font-family:var(--geo);font-weight:500;font-size:23px;margin:0;
+  letter-spacing:.02em;text-transform:uppercase;
+}
+.sec-head .meta{
+  font-family:var(--geo);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:700;margin-left:auto;
+}
+.count{color:var(--ink-2);font-size:12.5px;margin:13px 0 20px;font-variant-numeric:tabular-nums}
+
+/* ─── Live feed: multi-column card grid ─── */
+.feed{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1px;background:var(--line)}
+.card{
+  background:var(--surface);border:0;border-radius:0;
+  padding:26px 26px 22px;display:flex;flex-direction:column;
+  transition:background .18s;
+}
+.card:hover{background:var(--fill)}
+.card.hi{background:var(--fill)}
+.card.hi:hover{background:var(--line)}
+.tags{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.tag-sec{
+  font-family:var(--geo);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  font-weight:700;color:var(--ink);
+}
+.tag-dot{width:2.5px;height:2.5px;background:var(--ink-3);flex:none}
+.tag-m{
+  font-family:var(--geo);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:600;
+}
+.tag-major{
+  font-family:var(--geo);font-size:9px;letter-spacing:.18em;text-transform:uppercase;
+  font-weight:700;color:var(--invert-ink);background:var(--invert-bg);padding:3px 9px;
+}
+.tag-rep{
+  font-family:var(--geo);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  font-weight:700;color:var(--down);border:1px solid var(--down);padding:2px 8px;
+}
+.when{
+  margin-left:auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.when.today{color:var(--ink);font-weight:700}
+.headline{
+  font-family:var(--geo);font-weight:500;font-size:20px;line-height:1.22;
+  margin:0;letter-spacing:-.012em;text-wrap:balance;
+}
+.company{
+  font-family:var(--geo);font-size:10.5px;font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;margin:14px 0 9px;color:var(--ink);
+}
+.company .also{color:var(--ink-3);font-weight:500;letter-spacing:.08em}
+.card-sum{color:var(--ink-2);font-size:13.5px;margin:0;line-height:1.62}
+.card-foot{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  margin-top:auto;padding-top:18px;
+}
+.card-sum+.card-foot{margin-top:18px}
+.amount{
+  font-family:var(--mono);font-size:20px;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;line-height:1;
+}
+.amount.na{font-family:var(--sans);font-size:12px;color:var(--ink-3)}
+.srcline{display:flex;align-items:center;gap:12px;font-size:10.5px;color:var(--ink-3)}
+.srcline .ver{
+  font-family:var(--geo);letter-spacing:.1em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-2);
+}
+.srcline a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid var(--ink-3);padding-bottom:1px}
+.srcline a:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ─── Archive table ─── */
+.tablewrap{overflow-x:auto;border-top:1px solid var(--line)}
+table.arch{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+table.arch th{
+  text-align:left;font-family:var(--geo);font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:700;
+  padding:13px 18px 13px 0;border-bottom:1px solid var(--line);white-space:nowrap;
+}
+table.arch th:last-child{text-align:right;padding-right:0}
+table.arch td{padding:16px 18px 16px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.arch td:last-child{padding-right:0}
+table.arch tr:last-child td{border-bottom:0}
+table.arch tr:hover td{background:var(--fill)}
+.t-date{font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap}
+.t-co{
+  font-family:var(--geo);font-weight:700;font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;white-space:nowrap;
+}
+.t-sec{
+  font-family:var(--geo);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:700;white-space:nowrap;
+}
+.t-head{color:var(--ink);line-height:1.45;min-width:280px}
+.t-head a{text-decoration:none;border-bottom:1px solid var(--line)}
+.t-head a:hover{border-color:var(--ink)}
+.t-val{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.t-val.na{font-family:var(--sans);font-size:11px;color:var(--ink-3)}
+
+.empty{
+  border:1px dashed var(--line);padding:38px 24px;text-align:center;
+  color:var(--ink-3);font-size:13px;grid-column:1/-1;background:var(--surface);
+}
+
+/* ─── Method note ─── */
+.note{
+  margin-top:32px;padding:24px 26px;background:var(--fill);
+  color:var(--ink-2);font-size:12.5px;line-height:1.75;
+}
+.note b{color:var(--ink);font-weight:700}
+
+/* ─── Houses ─── */
+.houses{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1px;background:var(--line)}
+.house{
+  background:var(--surface);border:0;border-radius:0;padding:13px 15px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  cursor:pointer;font:inherit;text-align:left;transition:background .15s;
+}
+.house:hover{background:var(--fill)}
+.house[aria-current="true"]{background:var(--invert-bg)}
+.house[aria-current="true"] .hn,.house[aria-current="true"] .hc{color:var(--invert-ink)}
+.house .hn{
+  font-family:var(--geo);font-size:10.5px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink);
+}
+.house .hc{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.house.on .hc{color:var(--ink);font-weight:700}
+.house.quiet .hn{color:var(--ink-3)}
+.press-divider{
+  grid-column:1/-1;background:var(--paper);padding:16px 15px 6px;
+  font-family:var(--geo);font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:700;border-top:2px solid var(--rule);
+}
+.house.press{background:var(--surface)}
+.house.press .hn::after{
+  content:"Press";margin-left:8px;font-size:8.5px;letter-spacing:.14em;
+  color:var(--ink-3);font-weight:600;
+}
+.house.press[aria-current="true"] .hn::after{color:var(--invert-ink);opacity:.7}
+
+/* ─── Trade press cards: lighter than a deal card — no value, no category ─── */
+.press-card{
+  background:var(--surface);border:0;padding:22px 24px 20px;
+  display:flex;flex-direction:column;transition:background .18s;
+}
+.press-card:hover{background:var(--fill)}
+.press-card .tags{margin-bottom:12px}
+.press-card .headline{font-size:17px}
+.press-card .card-sum{font-size:13px}
+.press-card .card-foot{padding-top:14px}
+
+.colophon{
+  margin-top:52px;padding-top:22px;border-top:2px solid var(--rule);
+  color:var(--ink-3);font-size:10.5px;line-height:2;
+  font-family:var(--geo);letter-spacing:.08em;
+}
+
+/* ─── Company dossier: rolling 12-month record, opened from any house ─── */
+.tk-age{
+  font-family:var(--geo);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  opacity:.6;padding-left:2px;
+}
+.co-link{
+  background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;
+  text-decoration:underline;text-decoration-style:dotted;text-underline-offset:4px;
+  text-decoration-color:var(--ink-3);min-height:32px;
+}
+.co-link:hover{text-decoration-style:solid;text-decoration-color:var(--ink)}
+/* A company name is the way in to its 12-month record: solid underline plus a
+   pointer, so the affordance reads without needing a separate button. */
+.co-link{text-decoration-color:var(--ink-2)}
+.dossier[hidden]{display:none}
+.dossier{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:24px}
+.dossier-scrim{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(2px)}
+.dossier-panel{
+  position:relative;background:var(--paper);border:1px solid var(--rule);
+  width:min(880px,100%);max-height:88vh;display:flex;flex-direction:column;
+  box-shadow:0 24px 64px rgba(0,0,0,.28);
+}
+.dossier-head{
+  display:flex;align-items:flex-start;gap:20px;padding:26px 28px 18px;
+  border-bottom:2px solid var(--rule);
+}
+.dossier-name{
+  font-family:var(--geo);font-weight:500;font-size:clamp(24px,3.4vw,34px);
+  margin:10px 0 0;letter-spacing:-.01em;text-transform:uppercase;line-height:1;
+}
+.dossier-sub{margin:10px 0 0;color:var(--ink-2);font-size:13px}
+.dossier-x{
+  margin-left:auto;flex:none;background:none;border:1px solid var(--line);
+  width:34px;height:34px;cursor:pointer;color:var(--ink);font-size:15px;line-height:1;
+}
+.dossier-x:hover{background:var(--invert-bg);color:var(--invert-ink);border-color:var(--invert-bg)}
+.dossier-stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.dstat{padding:16px 20px;border-left:1px solid var(--line)}
+.dstat:first-child{border-left:0}
+.dstat .f{font-family:var(--mono);font-size:20px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.dstat .l{
+  margin-top:7px;font-family:var(--geo);font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:700;
+}
+.dossier-actions{display:flex;gap:8px;flex-wrap:wrap;padding:14px 28px;border-bottom:1px solid var(--line)}
+.dossier-body{overflow-y:auto;padding:6px 28px 28px}
+.dmonth{
+  font-family:var(--geo);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-3);padding:22px 0 10px;border-bottom:1px solid var(--line);
+}
+.ditem{display:flex;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
+.ditem:last-child{border-bottom:0}
+.dwhen{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);white-space:nowrap;
+  width:96px;flex:none;padding-top:2px;
+}
+.dmain{flex:1;min-width:0}
+.dhead{font-size:14.5px;line-height:1.45;margin:0}
+.dhead a{text-decoration:none;border-bottom:1px solid var(--line)}
+.dhead a:hover{border-color:var(--ink)}
+.dmeta{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:8px}
+.dmeta span{
+  font-family:var(--geo);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:700;
+}
+.dval{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;flex:none}
+.dval.na{font-family:var(--sans);font-size:11px;color:var(--ink-3)}
+
+@media (max-width:640px){
+  .dossier{padding:0}
+  .dossier-panel{max-height:100vh;height:100%;width:100%;border:0}
+  .dossier-stats{grid-template-columns:1fr 1fr}
+  .dstat:nth-child(3){border-left:0}
+  .dstat:nth-child(n+3){border-top:1px solid var(--line)}
+  .dossier-head,.dossier-actions,.dossier-body{padding-left:18px;padding-right:18px}
+  /* Stack the row: a long value ("50-year licence") must not squeeze the headline
+     into a two-word column or run under the panel edge. */
+  .ditem{flex-direction:column;gap:7px}
+  .dwhen{width:auto;padding-top:0}
+  .dval,.dval.na{text-align:left;white-space:normal;font-size:12.5px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .ticker-track{transform:none!important}
+}
+@media (max-width:900px){
+  .kpis{grid-template-columns:1fr 1fr}
+  .kpi{padding:20px}
+  .kpi:first-child,.kpi:nth-child(3){border-left:0;padding-left:0}
+  .kpi:nth-child(n+3){border-top:1px solid var(--line)}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px 64px}
+  .feed{grid-template-columns:1fr}
+  .filt-lab{width:100%}
+  .masthead{padding-top:32px}
+  .sec-head .meta{margin-left:0;width:100%}
+
+  /* Touch targets: 44px minimum. The desktop sizes are comfortable with a
+     pointer but too small to hit reliably with a thumb. */
+  .pill{padding:12px 16px;min-height:44px;font-size:11px}
+  .selwrap{flex:1;min-width:150px}
+  .selwrap select{width:100%;padding:13px 32px 13px 14px;min-height:44px}
+  .searchbox{padding:11px 14px;min-height:44px}
+  .reset{min-height:44px;padding:10px 2px}
+  .card .company{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+  .house{min-height:56px}
+  .co-link{min-height:38px}
+  .dossier-x{width:44px;height:44px;font-size:17px}
+  .dossier-actions .pill{width:100%;justify-content:center}
+  /* The archive table is dense for a phone: let each row breathe. */
+  table.arch{min-width:560px}
+  .t-head{min-width:200px}
+}
+</style>
+</head>
+<body>
+<div class="ticker" id="ticker" aria-label="Today's headline figures"></div>
+
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand">
+      <div class="eyebrow">Beauty &amp; Cosmetics · Deal Intelligence</div>
+      <h1 class="logo">Daily Beauty News</h1>
+      <p class="tag">The world's great beauty and personal-care houses, and every move that matters — swept every 15 minutes, and dated at the source.</p>
+    </div>
+    <div class="status">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Updated <b id="asof"></b> · swept every 15 min</span>
+    </div>
+  </header>
+
+  <section class="kpis" id="kpis" aria-label="Summary figures"></section>
+
+  <div class="toolbar">
+    <div class="filt">
+      <div class="filt-row">
+        <span class="filt-lab">Sector</span>
+        <span id="sectors" style="display:contents"></span>
+      </div>
+      <div class="filt-row">
+        <span class="filt-lab">Type</span>
+        <span id="cats" style="display:contents"></span>
+        <span class="selwrap"><select id="geoFilter" aria-label="Filter by region"></select></span>
+        <span class="selwrap"><select id="coFilter" aria-label="Filter by company"></select></span>
+      </div>
+      <div class="filt-row">
+        <span class="filt-lab">Find</span>
+        <span class="searchbox">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="q" type="search" placeholder="Search a house, brand, deal or region" aria-label="Search events">
+        </span>
+        <button class="reset" id="reset" hidden>Clear all</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head"><h2>The Latest</h2><span class="meta">Fresh · last 48 hours</span></div>
+  <p class="count" id="countLine" role="status" aria-live="polite"></p>
+  <div class="feed" id="feed"></div>
+
+  <div class="sec-head"><h2>Trade Press</h2><span class="meta">WWD · BeautyMatter · BoF · Beauty Independent — last 48 hours</span></div>
+  <p class="count" id="pressCount"></p>
+  <div class="feed" id="pressFeed"></div>
+
+  <div class="sec-head"><h2>Earlier This Week</h2><span class="meta">Two to seven days</span></div>
+  <p class="count" id="archCount"></p>
+  <div id="archiveWrap"></div>
+
+  <div class="note">
+    <b>How this stays fresh.</b> Eleven trade sources are polled every 15 minutes, and every publication date is taken from the publisher's own feed metadata rather than inferred — so a weekly round-up can never resurface old news as new. <b>The Latest</b> holds the past 48 hours; the archive keeps days two through seven; the phone alert carries only stories published in the last 24 hours, each checked against its own article page before it is sent, once. A quiet page means a quiet market, not missing coverage.
+  </div>
+
+  <div class="sec-head"><h2>The Houses</h2><span class="meta" id="watchMeta">Watchlist</span></div>
+  <p class="count">Activity across the seven-day record. Select any house — or trade press outlet — to open its full 12-month dossier.</p>
+  <div class="houses" id="houses"></div>
+
+  <div class="colophon">
+    Sources — WWD · BeautyMatter · Beauty Independent · BW Confidential · Cosmetics Business · Global Cosmetics News · TheIndustry.beauty · PR Newswire · Business Wire · company filings and investor relations<br>
+    Signal only, not investment advice. Verify against primary filings before acting.
+  </div>
+</div>
+
+<div class="dossier" id="dossier" hidden>
+  <div class="dossier-scrim" data-close></div>
+  <div class="dossier-panel" role="dialog" aria-modal="true" aria-labelledby="dossierName">
+    <header class="dossier-head">
+      <div>
+        <div class="eyebrow" id="dossierKind">Company dossier · rolling 12 months</div>
+        <h2 class="dossier-name" id="dossierName"></h2>
+        <p class="dossier-sub" id="dossierSub"></p>
+      </div>
+      <button class="dossier-x" id="dossierClose" aria-label="Close dossier">✕</button>
+    </header>
+    <div class="dossier-stats" id="dossierStats"></div>
+    <div class="dossier-actions">
+      <button class="pill" id="dossierFilter">Filter the dashboard to this house</button>
+    </div>
+    <div class="dossier-body" id="dossierBody"></div>
+  </div>
+</div>
+
+<script>
+const AS_OF = "2026-10-24";
+const WINDOW_DAYS = 1;    // Latest: today + yesterday ≈ 48h
+const ARCHIVE_DAYS = 7;   // Archive: days 2–7
+const CATS = {mna:"M&A", fund:"Funding", part:"Partnership", earn:"Earnings"};
+const CAT_FULL = {mna:"M&A / Divestiture", fund:"Funding / Capital", part:"Partnership / Licensing", earn:"Earnings / Guidance"};
+const SECTORS = ["Skincare","Color Cosmetics","Haircare","Fragrance","Body Care","Multi-category"];
+const GEOS = ["North America","Europe","Asia-Pacific","Latin America","Middle East & Africa","Global"];
+const WATCH = ["Amorepacific","Amway","Beiersdorf","Belcorp","Caudalie","Chanel",
+  "Church & Dwight","Clarins","Clorox","Colgate-Palmolive","Combe","Cosnova","Coty",
+  "Dabur","Douglas","e.l.f. Beauty","Edgewell","Energizer","Estée Lauder","Fancl",
+  "Florasis","Galderma","Groupe Rocher","Grupo Boticário","Guthy-Renker","Haleon",
+  "Henkel","Hermès","Interparfums","Jahwa","Joy Group","Kao","Kenvue","KIKO Milano",
+  "Kimberly-Clark","Kosé","L'Occitane","L'Oréal","LG H&H","Lion","LVMH","Maesa",
+  "Mandom","Markwins Beauty Brands","Natura &Co","Noevir Holdings","Nu Skin","Nuxe",
+  "Oddity","Oriflame","Orveon","PDC Wellness & Personal Care","Pierre Fabre",
+  "Pola Orbis","Procter & Gamble","Proya","Puig","Rare Beauty","Reckitt","Revlon",
+  "Rodan & Fields","Sephora","Shiseido","Sisley","Ulta","Unicharm","Unilever","Wella",
+  "Yanbal","Yatsen Holdings"];
+
+// Trade press: general beauty-industry news swept daily from these four outlets,
+// independent of the monetary-event/watchlist filter above.
+const MEDIA_HOUSES = ["WWD","BeautyMatter","Business of Fashion","Beauty Independent"];
+
+// ——— Live dataset (regenerated daily; every date verified at the source) ———
+const EVENTS = [
+  {date:"2026-10-23", co:"Procter & Gamble", also:[], cat:"earn", sec:"Haircare", geo:"Global", hi:true, head:"Procter & Gamble sales top $23.3 billion in strong Q1 2027", sum:"The Q1 2027 4% sales increase for Procter & Gamble (P&G), the owner of Olay and Herbal Essences, was driven by its beauty division, which benefited particularly from hair care demand", value:"$23.3 B", val:23.3, src:"Cosmetics Business", srcDate:"Oct 23", url:"https://www.cosmeticsbusiness.com/procter-gamble-sales-top-23-bn-q1-2027"},
+  {date:"2026-10-23", co:"Beiersdorf", also:[], cat:"fund", sec:"Skincare", geo:"Europe", hi:false, head:"Nivea backs men’s mental health with ANDYSMANCLUB partnership", sum:"The skincare brand is backing the peer-support charity's #ITSOKAYTOTALK message as its founders receive a Pride of Britain award, a decade on from the first group meeting in Halifax.", value:"—", val:0.0, src:"TheIndustry.beauty", srcDate:"Oct 23", url:"https://theindustry.beauty/nivea-backs-mens-mental-health-with-andysmanclub-partnership/"}
+];
+
+// ——— Archive: aged out of the live window (days 2–7), verified dates only ———
+const PAST = [
+  {date:"2026-10-22", co:"Puig", also:[], cat:"earn", sec:"Fragrance", geo:"Asia-Pacific", hi:true, head:"Puig’s fragrance and make-up brands drive record Q3 revenue of €1.4 billion", sum:"All of Puig’s business divisions and regions saw revenue growth, with a double-digit increase in niche fragrances, dermocosmetics, make-up and the Asia-Pacific region", value:"€1.4 B", val:1.512, src:"Cosmetics Business", srcDate:"Oct 22", url:"https://www.cosmeticsbusiness.com/puig-fragrance-make-brands-drive-record-revenue"},
+  {date:"2026-10-22", co:"Interparfums", also:[], cat:"earn", sec:"Fragrance", geo:"Global", hi:false, head:"Interparfums Q3 sales surge of 4.8% triggers stock price jump", sum:"The fragrance company, which makes scents for Jimmy Choo, Coach, Lacoste and DKNY, saw stock prices rise on 20 October after its Q3 2026 financial report signalled a strong market performance", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 22", url:"https://www.cosmeticsbusiness.com/interparfums-q3-sales-surge-triggers-stock-price-jump"},
+  {date:"2026-10-22", co:"Estée Lauder", also:["Clarins"], cat:"earn", sec:"Multi-category", geo:"Europe", hi:false, head:"Freemans beauty sales rise 17% as women over 40 drive growth", sum:"The digital department store, which only entered beauty in 2021, credits midlife shoppers and new brands from Mugler to Medicube, and is now inviting more partners, naming Trinny London, Clarins and Estée Lauder among its targets.", value:"—", val:0.0, src:"TheIndustry.beauty", srcDate:"Oct 22", url:"https://theindustry.beauty/freemans-beauty-sales-rise-17-as-women-over-40-drive-growth/"},
+  {date:"2026-10-21", co:"Chanel", also:[], cat:"part", sec:"Multi-category", geo:"Global", hi:true, head:"Chanel sells majority Capsum stake to Motion Equity Partners", sum:"Innovation and manufacturing partner Capsum is now under Motion Equity Partners, with luxury brand and long term partner Chanel remaining a minority shareholder in the company", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 21", url:"https://www.cosmeticsbusiness.com/chanel-sells-majority-capsum-stake-to-motion-ep"},
+  {date:"2026-10-21", co:"Sephora", also:[], cat:"part", sec:"Multi-category", geo:"Europe", hi:false, head:"Sephora UK MD on 2027 expansion plans and the M&S store partnership: ‘Now we want proximity’", sum:"Hot off hosting its beauty festival, Sephoria, in the UK for the first time, UK MD Sarah Boyd reveals the retailer’s 2027 expansion plans for the region, including a third boutique, more large-format stores, and what Sephora’s upcoming shop-in-shop concept with British multinational retailer Marks & Spencer (M&S) will actually entail", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 21", url:"https://www.cosmeticsbusiness.com/sephora-uk-on-2027-expansion-plans-and-m-and-s-partnership"},
+  {date:"2026-10-21", co:"Puig", also:[], cat:"earn", sec:"Fragrance", geo:"Global", hi:false, head:"Puig Q3 Sales Rise 7.2 Percent", sum:"All regions, and the group’s fragrance and makeup businesses, contributed to the gains.", value:"—", val:0.0, src:"WWD Beauty", srcDate:"Oct 21", url:"https://wwd.com/beauty-industry-news/beauty-features/puig-q3-sales-rise-7-2-percent-fragrance-makeup-all-regions-1239378422/"},
+  {date:"2026-10-21", co:"Interparfums", also:[], cat:"earn", sec:"Fragrance", geo:"Asia-Pacific", hi:false, head:"Interparfums SA Stock Surges Following Strong Q3", sum:"The French beauty maker saw a solid return to growth in Asia, driven by China, and revised upward its full-year sales expectations.", value:"—", val:0.0, src:"WWD Beauty", srcDate:"Oct 21", url:"https://wwd.com/beauty-industry-news/fragrance/interparfums-sa-stock-surges-following-strong-q3-asia-1239378337/"},
+  {date:"2026-10-20", co:"Sephora", also:[], cat:"fund", sec:"Skincare", geo:"Global", hi:true, head:"Mikayla Nogueira’s POV Beauty secures $15 million investment to accelerate its Sephora momentum", sum:"The Series A funding round led by Silas Capital, will be used to accelerate momentum within beauty retailer Sephora and improve the skin care brand’s presence on TikTok Shop", value:"$15 M", val:0.015, src:"Cosmetics Business", srcDate:"Oct 20", url:"https://www.cosmeticsbusiness.com/mikayla-nogueira-s-pov-beauty-secures-15-million-investment"},
+  {date:"2026-10-19", co:"Ulta", also:[], cat:"part", sec:"Skincare", geo:"Asia-Pacific", hi:false, head:"\"From K-Beauty to K-Patch\": MARSHIQUE Expands into North America with Launch at Ulta Beauty", sum:"Targeted wrinkle and lifting patches, along with MARSHIQUE's signature eyelash serum, will be available to U.S. beauty enthusiasts through Ulta Beauty SEOUL, South Korea, Oct. 19, 2026 /PRNewswire/ -- Global beauty brand MARSHIQUE is officially entering Ulta Beauty, the nation's largest...", value:"—", val:0.0, src:"PR Newswire Beauty", srcDate:"Oct 19", url:"https://www.prnewswire.com/news-releases/from-k-beauty-to-k-patch-marshique-expands-into-north-america-with-launch-at-ulta-beauty-302912479.html"},
+  {date:"2026-10-19", co:"Sephora", also:[], cat:"fund", sec:"Multi-category", geo:"Global", hi:false, head:"POV Beauty Secures Series A Investment Led by Silas Capital, with Participation from Imaginary Ventures &amp; RÉDO Capital, to Fuel Rapid Growth in Skin Prep Category", sum:"Following a highly successful nationwide launch at Sephora, the brand continues its massive momentum to scale operations, expand team, and accelerate omnichannel presence. LOS ANGELES, Oct. 19, 2026 /PRNewswire/ -- POV Beauty, the trailblazing skin prep brand co-founded by creator Mikayla...", value:"—", val:0.0, src:"PR Newswire Beauty", srcDate:"Oct 19", url:"https://www.prnewswire.com/news-releases/pov-beauty-secures-series-a-investment-led-by-silas-capital-with-participation-from-imaginary-ventures--redo-capital-to-fuel-rapid-growth-in-skin-prep-category-302912779.html"},
+  {date:"2026-10-19", co:"Coty", also:[], cat:"part", sec:"Fragrance", geo:"Europe", hi:false, head:"Boss Parfums inks multi-year partnership with Hyrox across six European regions", sum:"The multi-year partnership between Coty-owned Boss Parfums and fitness racing series Hyrox will unfold across six European regions as the fragrance brand becomes part of ‘the Hyrox ecosystem’", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 19", url:"https://www.cosmeticsbusiness.com/boss-parfums-inks-multi-year-partnership-with-hyrox"}
+];
+
+// ——— Rolling 365-day record — powers the per-company dossier ———
+const HISTORY = [
+  {date:"2026-10-23", co:"Procter & Gamble", also:[], cat:"earn", sec:"Haircare", geo:"Global", hi:true, head:"Procter & Gamble sales top $23.3 billion in strong Q1 2027", sum:"The Q1 2027 4% sales increase for Procter & Gamble (P&G), the owner of Olay and Herbal Essences, was driven by its beauty division, which benefited particularly from hair care demand", value:"$23.3 B", val:23.3, src:"Cosmetics Business", srcDate:"Oct 23", url:"https://www.cosmeticsbusiness.com/procter-gamble-sales-top-23-bn-q1-2027"},
+  {date:"2026-10-23", co:"Beiersdorf", also:[], cat:"fund", sec:"Skincare", geo:"Europe", hi:false, head:"Nivea backs men’s mental health with ANDYSMANCLUB partnership", sum:"The skincare brand is backing the peer-support charity's #ITSOKAYTOTALK message as its founders receive a Pride of Britain award, a decade on from the first group meeting in Halifax.", value:"—", val:0.0, src:"TheIndustry.beauty", srcDate:"Oct 23", url:"https://theindustry.beauty/nivea-backs-mens-mental-health-with-andysmanclub-partnership/"},
+  {date:"2026-10-22", co:"Puig", also:[], cat:"earn", sec:"Fragrance", geo:"Asia-Pacific", hi:true, head:"Puig’s fragrance and make-up brands drive record Q3 revenue of €1.4 billion", sum:"All of Puig’s business divisions and regions saw revenue growth, with a double-digit increase in niche fragrances, dermocosmetics, make-up and the Asia-Pacific region", value:"€1.4 B", val:1.512, src:"Cosmetics Business", srcDate:"Oct 22", url:"https://www.cosmeticsbusiness.com/puig-fragrance-make-brands-drive-record-revenue"},
+  {date:"2026-10-22", co:"Interparfums", also:[], cat:"earn", sec:"Fragrance", geo:"Global", hi:false, head:"Interparfums Q3 sales surge of 4.8% triggers stock price jump", sum:"The fragrance company, which makes scents for Jimmy Choo, Coach, Lacoste and DKNY, saw stock prices rise on 20 October after its Q3 2026 financial report signalled a strong market performance", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 22", url:"https://www.cosmeticsbusiness.com/interparfums-q3-sales-surge-triggers-stock-price-jump"},
+  {date:"2026-10-22", co:"Estée Lauder", also:["Clarins"], cat:"earn", sec:"Multi-category", geo:"Europe", hi:false, head:"Freemans beauty sales rise 17% as women over 40 drive growth", sum:"The digital department store, which only entered beauty in 2021, credits midlife shoppers and new brands from Mugler to Medicube, and is now inviting more partners, naming Trinny London, Clarins and Estée Lauder among its targets.", value:"—", val:0.0, src:"TheIndustry.beauty", srcDate:"Oct 22", url:"https://theindustry.beauty/freemans-beauty-sales-rise-17-as-women-over-40-drive-growth/"},
+  {date:"2026-10-21", co:"Chanel", also:[], cat:"part", sec:"Multi-category", geo:"Global", hi:true, head:"Chanel sells majority Capsum stake to Motion Equity Partners", sum:"Innovation and manufacturing partner Capsum is now under Motion Equity Partners, with luxury brand and long term partner Chanel remaining a minority shareholder in the company", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 21", url:"https://www.cosmeticsbusiness.com/chanel-sells-majority-capsum-stake-to-motion-ep"},
+  {date:"2026-10-21", co:"Sephora", also:[], cat:"part", sec:"Multi-category", geo:"Europe", hi:false, head:"Sephora UK MD on 2027 expansion plans and the M&S store partnership: ‘Now we want proximity’", sum:"Hot off hosting its beauty festival, Sephoria, in the UK for the first time, UK MD Sarah Boyd reveals the retailer’s 2027 expansion plans for the region, including a third boutique, more large-format stores, and what Sephora’s upcoming shop-in-shop concept with British multinational retailer Marks & Spencer (M&S) will actually entail", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 21", url:"https://www.cosmeticsbusiness.com/sephora-uk-on-2027-expansion-plans-and-m-and-s-partnership"},
+  {date:"2026-10-21", co:"Puig", also:[], cat:"earn", sec:"Fragrance", geo:"Global", hi:false, head:"Puig Q3 Sales Rise 7.2 Percent", sum:"All regions, and the group’s fragrance and makeup businesses, contributed to the gains.", value:"—", val:0.0, src:"WWD Beauty", srcDate:"Oct 21", url:"https://wwd.com/beauty-industry-news/beauty-features/puig-q3-sales-rise-7-2-percent-fragrance-makeup-all-regions-1239378422/"},
+  {date:"2026-10-21", co:"Interparfums", also:[], cat:"earn", sec:"Fragrance", geo:"Asia-Pacific", hi:false, head:"Interparfums SA Stock Surges Following Strong Q3", sum:"The French beauty maker saw a solid return to growth in Asia, driven by China, and revised upward its full-year sales expectations.", value:"—", val:0.0, src:"WWD Beauty", srcDate:"Oct 21", url:"https://wwd.com/beauty-industry-news/fragrance/interparfums-sa-stock-surges-following-strong-q3-asia-1239378337/"},
+  {date:"2026-10-20", co:"Sephora", also:[], cat:"fund", sec:"Skincare", geo:"Global", hi:true, head:"Mikayla Nogueira’s POV Beauty secures $15 million investment to accelerate its Sephora momentum", sum:"The Series A funding round led by Silas Capital, will be used to accelerate momentum within beauty retailer Sephora and improve the skin care brand’s presence on TikTok Shop", value:"$15 M", val:0.015, src:"Cosmetics Business", srcDate:"Oct 20", url:"https://www.cosmeticsbusiness.com/mikayla-nogueira-s-pov-beauty-secures-15-million-investment"},
+  {date:"2026-10-19", co:"Ulta", also:[], cat:"part", sec:"Skincare", geo:"Asia-Pacific", hi:false, head:"\"From K-Beauty to K-Patch\": MARSHIQUE Expands into North America with Launch at Ulta Beauty", sum:"Targeted wrinkle and lifting patches, along with MARSHIQUE's signature eyelash serum, will be available to U.S. beauty enthusiasts through Ulta Beauty SEOUL, South Korea, Oct. 19, 2026 /PRNewswire/ -- Global beauty brand MARSHIQUE is officially entering Ulta Beauty, the nation's largest...", value:"—", val:0.0, src:"PR Newswire Beauty", srcDate:"Oct 19", url:"https://www.prnewswire.com/news-releases/from-k-beauty-to-k-patch-marshique-expands-into-north-america-with-launch-at-ulta-beauty-302912479.html"},
+  {date:"2026-10-19", co:"Sephora", also:[], cat:"fund", sec:"Multi-category", geo:"Global", hi:false, head:"POV Beauty Secures Series A Investment Led by Silas Capital, with Participation from Imaginary Ventures &amp; RÉDO Capital, to Fuel Rapid Growth in Skin Prep Category", sum:"Following a highly successful nationwide launch at Sephora, the brand continues its massive momentum to scale operations, expand team, and accelerate omnichannel presence. LOS ANGELES, Oct. 19, 2026 /PRNewswire/ -- POV Beauty, the trailblazing skin prep brand co-founded by creator Mikayla...", value:"—", val:0.0, src:"PR Newswire Beauty", srcDate:"Oct 19", url:"https://www.prnewswire.com/news-releases/pov-beauty-secures-series-a-investment-led-by-silas-capital-with-participation-from-imaginary-ventures--redo-capital-to-fuel-rapid-growth-in-skin-prep-category-302912779.html"},
+  {date:"2026-10-19", co:"Coty", also:[], cat:"part", sec:"Fragrance", geo:"Europe", hi:false, head:"Boss Parfums inks multi-year partnership with Hyrox across six European regions", sum:"The multi-year partnership between Coty-owned Boss Parfums and fitness racing series Hyrox will unfold across six European regions as the fragrance brand becomes part of ‘the Hyrox ecosystem’", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 19", url:"https://www.cosmeticsbusiness.com/boss-parfums-inks-multi-year-partnership-with-hyrox"},
+  {date:"2026-10-16", co:"Estée Lauder", also:[], cat:"part", sec:"Color Cosmetics", geo:"Asia-Pacific", hi:false, head:"Estée Lauder Companies and Reliance Foundation empower Indian women in new partnership", sum:"Estée Lauder Companies’ initiative aims to help young women and girls strengthen digital and financial literacy and inform them about future pathways", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 16", url:"https://www.cosmeticsbusiness.com/est%C3%A9e-lauder-companies-and-reliance-foundation-empower-indian-women"},
+  {date:"2026-10-15", co:"L'Occitane", also:[], cat:"part", sec:"Multi-category", geo:"North America", hi:true, head:"ELEMIS Co-Founder Sean Harrington Joins Lempriere Wells as Partner", sum:"ELEMIS co-founder Sean Harrington has joined global investment bank Lempriere Wells as Partner, supporting the firm's expansion into the US beauty, wellness and longevity markets. The post ELEMIS Co-Founder Sean Harrington Joins Lempriere Wells as Partner appeared first on Global Cosmetics News.", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Oct 15", url:"https://www.globalcosmeticsnews.com/elemis-co-founder-sean-harrington-joins-lempriere-wells-as-partner/"},
+  {date:"2026-10-15", co:"Kenvue", also:["Kimberly-Clark"], cat:"mna", sec:"Body Care", geo:"Europe", hi:true, head:"EU Approves Kimberly-Clark’s US$40 Billion Kenvue Acquisition Following Divestment Agreement", sum:"The European Commission has approved Kimberly-Clark’s US$40 billion acquisition of Kenvue, subject to the divestment of several feminine hygiene brands to address competition concerns in the European market. The post EU Approves Kimberly-Clark’s US$40 Billion Kenvue Acquisition Following Divestment Agreement appeared first on Global Cosmetics News.", value:"US$40 B", val:40.0, src:"Global Cosmetics News", srcDate:"Oct 15", url:"https://www.globalcosmeticsnews.com/eu-approves-kimberly-clarks-us40-billion-kenvue-acquisition-following-divestment-agreement/"},
+  {date:"2026-10-15", co:"Galderma", also:[], cat:"mna", sec:"Skincare", geo:"North America", hi:true, head:"Galderma to Acquire ZO Skin Health in US$1.5 Billion Deal", sum:"Galderma has signed an agreement to acquire US physician-dispensed skincare brand ZO Skin Health for US$1.5 billion, strengthening its dermatological skincare portfolio and expanding its position in the medical aesthetics market. The post Galderma to Acquire ZO Skin Health in US$1.5 Billion Deal appeared first on Global Cosmetics News.", value:"US$1.5 B", val:1.5, src:"Global Cosmetics News", srcDate:"Oct 15", url:"https://www.globalcosmeticsnews.com/galderma-to-acquire-zo-skin-health-in-us1-5-billion-deal/"},
+  {date:"2026-10-15", co:"Edgewell", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:true, head:"Edgewell Personal Care Company to Webcast a Discussion of Fourth Quarter and Fiscal Year 2026 Results on November 12, 2026", sum:"SHELTON, Conn., Oct. 15, 2026 /PRNewswire/ -- Edgewell Personal Care Company (NYSE: EPC) will report its financial results for the fourth quarter and fiscal year 2026 before the market opens on November 12, 2026. Edgewell will discuss its results during an investor conference call that...", value:"—", val:0.0, src:"PR Newswire Beauty", srcDate:"Oct 15", url:"https://www.prnewswire.com/news-releases/edgewell-personal-care-company-to-webcast-a-discussion-of-fourth-quarter-and-fiscal-year-2026-results-on-november-12-2026-302910449.html"},
+  {date:"2026-10-14", co:"e.l.f. Beauty", also:[], cat:"part", sec:"Multi-category", geo:"Global", hi:true, head:"AI-Generated Hunter and Rhode Beauty Concept Highlights Risks of Unofficial Brand Collaborations", sum:"An AI-generated concept featuring Hunter Wellington boots with an integrated Rhode lip gloss holder has attracted attention online, highlighting how artificial intelligence can blur the distinction between unofficial designs and genuine beauty brand collaborations. The post AI-Generated Hunter and Rhode Beauty Concept Highlights Risks of Unofficial Brand Collaborations appeared first on Global Cos", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Oct 14", url:"https://www.globalcosmeticsnews.com/ai-generated-hunter-and-rhode-beauty-concept-highlights-risks-of-unofficial-brand-collaborations/"},
+  {date:"2026-10-14", co:"L'Occitane", also:[], cat:"fund", sec:"Skincare", geo:"Europe", hi:false, head:"Elemis’ Sean Harrington joins investment bank Lempriere Wells to chart new beauty chapter", sum:"Sean Harrington, who co-founded luxury British spa and skin care brand Elemis, is writing the next chapter of his beauty story at global investment bank Lempriere Wells. Cosmetics Business hears his ambitions and his reflections on 37 years with Elemis", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Oct 14", url:"https://www.cosmeticsbusiness.com/elemis-sean-harrington-joins-investment-bank-lempriere-wells"},
+  {date:"2026-10-13", co:"L'Occitane", also:[], cat:"part", sec:"Fragrance", geo:"Global", hi:false, head:"Sol de Janeiro partners with Channel 4 on five-part vertical drama to promote new fragrance mists", sum:"Sol de Janeiro is partnering with Channel 4 to launch a five-part vertical drama, using short-form entertainment to promote its new Intense Perfume Mists collection. Titled The Guest List, the series marks Channel 4’s first… ...", value:"—", val:0.0, src:"TheIndustry.beauty", srcDate:"Oct 13", url:"https://theindustry.beauty/sol-de-janeiro-partners-with-channel-4-on-five-part-vertical-drama-to-promote-new-fragrance-mists/"},
+  {date:"2026-10-13", co:"L'Occitane", also:[], cat:"part", sec:"Multi-category", geo:"North America", hi:false, head:"Sean Harrington Joins Lempriere Wells as Partner", sum:"The former Elemis cofounder joins Lempriere Wells — now rebranded as Lempriere Wells Harrington — to advise beauty and wellness brands in the U.S. and globally.", value:"—", val:0.0, src:"WWD Beauty p2", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/beauty-features/sean-harrington-joins-lempriere-wells-partner-1239320278/"},
+  {date:"2026-09-02", co:"Wella", also:[], cat:"fund", sec:"Multi-category", geo:"Global", hi:true, head:"Wella Files for US IPO as Revenue Reaches US$2.94 Billion", sum:"KKR-backed Wella Company filed to list on the NYSE under ticker WELA after returning to profit, with fiscal-year revenue of $2.94 billion (up from $2.69 billion) and net income of $2.7 million versus a $44.6 million prior-year loss. Proceeds are earmarked for debt repayment and restructuring-related tax costs.", value:"$2.94B rev", val:0.0, src:"Global Cosmetics News", srcDate:"Sep 2", url:"https://www.globalcosmeticsnews.com/wella-files-for-us-ipo-as-revenue-reaches-us2-94-billion/"},
+  {date:"2026-09-02", co:"Kimberly-Clark", also:["Kenvue"], cat:"mna", sec:"Multi-category", geo:"Asia-Pacific", hi:true, head:"Australia's ACCC Clears Kimberly-Clark's $48.7B Kenvue Acquisition, Subject to Divestment", sum:"The Australian Competition and Consumer Commission approved Kimberly-Clark's acquisition of Kenvue on condition that Kimberly-Clark divest Kenvue's Carefree and Stayfree period-care brands in Australia to preserve competition. The global deal remains subject to an EU antitrust deadline of Sept 29 and deeper China review.", value:"$48.7B deal (ACCC clears, AU divestment)", val:48.7, src:"Inside FMCG", srcDate:"Sep 2", url:"https://insidefmcg.com.au/2026/09/02/accc-clears-kimberly-clark-kenvue-deal-subject-to-carefree-stayfree-sale/"},
+  {date:"2026-09-02", co:"Yatsen Holdings", also:[], cat:"earn", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"Yatsen Announces Second Quarter 2026 Financial Results", sum:"Yatsen posted Q2 total net revenue of RMB1.14 billion (US$168.3 million), up 5.1% year on year, with skincare brand revenue up 40.4% offsetting continued color-cosmetics headwinds; net loss widened to RMB90.8 million.", value:"RMB1.14B rev", val:0.0, src:"PR Newswire", srcDate:"Sep 2", url:"https://www.prnewswire.com/news-releases/yatsen-announces-second-quarter-2026-financial-results-302867531.html"},
+  {date:"2026-09-01", co:"Yellow Wood Partners", also:["Nestlé"], cat:"mna", sec:"Multi-category", geo:"North America", hi:true, head:"Yellow Wood Partners Agrees to Acquire Nestlé's Holistic Health Platform", sum:"Private equity firm Yellow Wood Partners agreed to buy Nestlé's Holistic Health vitamins, minerals and supplements platform — including Nature's Bounty, Nuun, Osteo Bi-Flex and Gard — for $1.0 billion, expected to close in H1 2027.", value:"$1.0B", val:1.0, src:"PR Newswire", srcDate:"Sep 1", url:"https://www.prnewswire.com/news-releases/yellow-wood-partners-agrees-to-acquire-nestles-holistic-health-platform-of-leading-vitamins-minerals-and-supplements-brands-302866603.html"},
+  {date:"2026-09-01", co:"Victoria Beckham Holdings", also:[], cat:"earn", sec:"Multi-category", geo:"Europe", hi:false, head:"Victoria Beckham Holdings Returns to Profit as Beauty Drives Group Growth", sum:"Victoria Beckham Holdings reported its first operating profit since launching 18 years ago, with 2025 revenue up 15% to £129.8 million driven by the beauty division.", value:"£129.8M rev", val:0.0, src:"Global Cosmetics News", srcDate:"Sep 1", url:"https://www.globalcosmeticsnews.com/victoria-beckham-holdings-returns-to-profit-as-beauty-drives-group-growth/"},
+  {date:"2026-09-01", co:"Skyline Beauty Group", also:["Lumin", "Meridian"], cat:"mna", sec:"Multi-category", geo:"North America", hi:false, head:"Skyline Beauty Group Acquires Lumin and Meridian From Pangaea Holdings", sum:"Skyline Beauty Group acquired men's skincare brand Lumin and body-grooming brand Meridian, which together generated roughly $35M in trailing sales. Terms were undisclosed; it's Skyline's second acquisition in five months following LilyAna Naturals. Off-watchlist companies — market intelligence.", value:"—", val:0.0, src:"Beauty Independent", srcDate:"Sep 1", url:"https://www.beautyindependent.com/skyline-beauty-group-acquires-lumin-meridian-accelerates-dealmaking/"},
+  {date:"2026-09-01", co:"Shein", also:[], cat:"fund", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"Shein Completes Hong Kong IPO as Listing Reshapes Investor Obligations", sum:"Shein completed its Hong Kong IPO, raising roughly $1.7 billion at a valuation of about $26 billion — down sharply from its 2022 peak of $98.2 billion — a capital-markets event relevant to the K-beauty brands that reach shoppers through its cross-border marketplace.", value:"$1.7B raised", val:1.7, src:"Global Cosmetics News", srcDate:"Sep 1", url:"https://www.globalcosmeticsnews.com/shein-completes-hong-kong-ipo-as-listing-reshapes-investor-obligations/"},
+  {date:"2026-09-01", co:"Dollar Shave Club", also:["Truly Beauty"], cat:"mna", sec:"Body Care", geo:"North America", hi:false, head:"Dollar Shave Club Acquires Truly Beauty in First-Ever Acquisition", sum:"Dollar Shave Club, under CEO Larry Bodner, acquired Gen Z-focused body care brand Truly Beauty as it builds a multi-brand personal care platform. Financial terms were not disclosed; both brands will retain separate identities while integrating backend operations. Off-watchlist companies — market intelligence.", value:"—", val:0.0, src:"PR Newswire", srcDate:"Sep 1", url:"https://www.prnewswire.com/news-releases/dollar-shave-club-announces-acquisition-of-truly-beauty-302865796.html"},
+  {date:"2026-08-31", co:"So-Young International", also:[], cat:"earn", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"So-Young Reports Unaudited Second Quarter 2026 Financial Results", sum:"The China-based aesthetic treatment platform posted Q2 total revenue of RMB505.2 million (US$74.5M), up 33.4% year on year, driven by a 129.5% jump in aesthetic treatment services revenue.", value:"RMB505.2M revenue", val:0.0, src:"PR Newswire", srcDate:"Aug 31", url:"https://www.prnewswire.com/news-releases/so-young-reports-unaudited-second-quarter-2026-financial-results-302864843.html"},
+  {date:"2026-08-31", co:"Mao Geping Cosmetics", also:[], cat:"earn", sec:"Color Cosmetics", geo:"Asia-Pacific", hi:false, head:"Mao Geping Cosmetics Reports 26.2% Revenue Growth in First Half", sum:"The Chinese prestige beauty group posted first-half revenue up 26.2% year on year to RMB3.27 billion, with profit rising roughly 20% to RMB805.45 million.", value:"RMB3.27B revenue", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 31", url:"https://www.globalcosmeticsnews.com/mao-geping-cosmetics-reports-26-2-revenue-growth-in-first-half/"},
+  {date:"2026-08-28", co:"Ulta", also:[], cat:"earn", sec:"Multi-category", geo:"North America", hi:true, head:"Ulta Beauty Raises 2026 Guidance as Q2 Sales Reach US$3 Billion", sum:"Ulta Beauty has raised its fiscal 2026 guidance after reporting an 8.9 percent increase in second-quarter net sales, supported by comparable sales growth, new stores and the acquisition of Space NK. The post Ulta Beauty Raises 2026 Guidance as Q2 Sales Reach US$3 Billion appeared first on Global Cosmetics News.", value:"US$3 B", val:3.0, src:"Global Cosmetics News", srcDate:"Aug 28", url:"https://www.globalcosmeticsnews.com/ulta-beauty-raises-2026-guidance-as-q2-sales-reach-us3-billion/"},
+  {date:"2026-08-28", co:"LG H&H", also:[], cat:"part", sec:"Haircare", geo:"North America", hi:false, head:"LG H&H Expands Dr.Groot Across 424 Sephora Stores in the US", sum:"LG Household & Health Care rolled out its Dr.Groot premium scalp-care brand into 424 Sephora US locations, following a March digital launch on Sephora.com and a ~90-store pilot in May.", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 28", url:"https://www.globalcosmeticsnews.com/lg-hh-expands-dr-groot-across-424-sephora-stores-in-the-us/"},
+  {date:"2026-08-27", co:"Ulta", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:true, head:"Ulta Beauty Beats Wall Street Expectations, Raises Full-year Forecasts Amid Strong Q2 Performance", sum:"Bolstered by an 8.9 percent sales increase, international expansion and new initiatives, the beauty retailer raised its outlook for continued growth.", value:"—", val:0.0, src:"WWD Beauty", srcDate:"Aug 27", url:"https://wwd.com/beauty-industry-news/beauty-features/ulta-beauty-beats-wall-street-expectations-raises-forecasts-1239172914/"},
+  {date:"2026-08-27", co:"Ulta", also:[], cat:"earn", sec:"Multi-category", geo:"North America", hi:true, head:"Ulta Beauty beats Q2 estimates, raises full-year 2026 guidance", sum:"Ulta reported Q2 FY2026 net sales up 8.9% to $3.0B and diluted EPS of $6.55 (vs. $6.17 est.), boosted by comp-sales growth and the Space NK acquisition; it raised FY2026 EPS guidance to $28.70-$29.00 and net sales growth guidance to 6.7%-7.2%.", value:"—", val:0.0, src:"Ulta Beauty IR / Businesswire", srcDate:"Aug 27", url:"https://www.ulta.com/investor/news-events/press-releases"},
+  {date:"2026-08-27", co:"Sephora", also:["Jahwa"], cat:"mna", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"Shanghai Jahwa Exits Sephora China Joint Venture", sum:"Shanghai Jahwa Exits Sephora China Joint Venture", value:"—", val:0.0, src:"BeautyMatter", srcDate:"Aug 27", url:"https://beautymatter.com/articles/shanghai-jahwa-exits-sephora-china-joint-venture"},
+  {date:"2026-08-24", co:"LG H&H", also:["Avon"], cat:"mna", sec:"Multi-category", geo:"North America", hi:true, head:"Regent to acquire Avon North America from LG H&H, reuniting Avon under common ownership", sum:"Regent affiliate Stratford Worldwide agreed to buy LG H&H's stake in The Avon Company, reunifying Avon North America with Avon's international operations (which Regent already owns after its January 2026 purchase from Natura &Co) for the first time since 2016. Financial terms were not disclosed; the deal is expected to close September 1. LG H&H had bought the business for $125M in 2019.", value:"Undisclosed", val:0.0, src:"PR Newswire", srcDate:"Aug 24", url:"https://www.prnewswire.com/news-releases/regent-to-acquire-avon-north-america-reuniting-major-avon-businesses-after-more-than-a-decade-apart-302857829.html"},
+  {date:"2026-08-25", co:"Ci FLAVORS", also:["KKR", "L Catterton"], cat:"mna", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"KKR buys Japanese beauty platform Ci FLAVORS from L Catterton and founder", sum:"KKR agreed to acquire Ci FLAVORS, a Japanese beauty and lifestyle brand platform spanning haircare, skincare and body care (including &honey and MOROCCAN BEAUTY), from L Catterton and other shareholders for an undisclosed amount. Founder Yusaku Horiuchi and CEO Yoshiaki Okura will reinvest alongside KKR.", value:"—", val:0.0, src:"DealStreetAsia / Business Wire", srcDate:"Aug 25", url:"https://www.dealstreetasia.com/stories/kkr-to-acquire-japanese-beauty-platform-ci-flavors-493124"},
+  {date:"2026-08-24", co:"KIKO Milano", also:[], cat:"part", sec:"Color Cosmetics", geo:"Latin America", hi:false, head:"KIKO Milano enters Uruguay with an €8.55M expansion plan", sum:"KIKO Milano will open its first Uruguay store at Montevideo Shopping in late October in partnership with Grupo Antelo, investing €8.55M to build an eight-store network over five years and create around 100 jobs. Strong performance could open the door to a subsequent expansion into Argentina.", value:"€8.55M", val:0.0086, src:"Global Cosmetics News", srcDate:"Aug 24", url:"https://www.globalcosmeticsnews.com/kiko-milano-enters-uruguay-with-e8-55-million-expansion-plan/"},
+  {date:"2026-08-24", co:"Adore Beauty", also:[], cat:"earn", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"Adore Beauty posts record FY26 revenue as store network triples but EBITDA falls", sum:"The Australian beauty retailer reported record FY2026 revenue of A$207.3M (+4.3%), helped by an $18.6M contribution from its store network which grew from 7 to 20 locations, but underlying EBITDA fell 39% to A$3.8M on investment costs. It is targeting at least 10% revenue growth in FY27.", value:"A$207.3M rev", val:0.0, src:"Business News Australia", srcDate:"Aug 24", url:"https://www.businessnewsaustralia.com/articles/adore-beauty-hits-record-207m-revenue-as-omnichannel-push-cushions-challenging-retail-market.html"},
+  {date:"2026-08-20", co:"Wipro Consumer Care", also:[], cat:"mna", sec:"Skincare", geo:"Asia-Pacific", hi:true, head:"Wipro Consumer Care buys 60% of Dermatouch for ₹3.88B to enter digital-first premium skincare", sum:"Wipro Consumer Care and Lighting agreed to acquire a 60% stake in Indian skincare brand Dermatouch at an enterprise value of ₹3.88B (about US$44M), its entry into India's digital-first premium skincare segment. Dermatouch gains Wipro's distribution reach and R&D.", value:"₹3.88B / $44M", val:0.044, src:"Global Cosmetics News", srcDate:"Aug 20", url:"https://www.globalcosmeticsnews.com/wipro-consumer-care-acquires-dermatouch-to-enter-digital-first-premium-skincare/"},
+  {date:"2026-08-20", co:"Ulta", also:[], cat:"earn", sec:"Multi-category", geo:"North America", hi:true, head:"Target lifts full-year outlook as Q2 sales rise 5.3% and beauty grows high single digits", sum:"Q2 net sales rose 5.3% to US$26.5B with comparable sales up 3.8% and digital comps up 8.7%. Beauty delivered high single-digit growth and Target raised full-year net sales guidance to roughly 5%, a point above prior expectations — read closely by Ulta, whose shop-in-shop agreement with Target concludes this month.", value:"$26.5B rev", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 20", url:"https://www.globalcosmeticsnews.com/target-raises-2026-outlook-as-q2-sales-rise-and-beauty-delivers-high-single-digit-growth/"},
+  {date:"2026-08-20", co:"Kenvue", also:["Essity"], cat:"mna", sec:"Body Care", geo:"Latin America", hi:true, head:"Essity to acquire Kenvue's Brazil feminine care business for $284M", sum:"Essity agreed to buy Kenvue's Brazilian feminine care business — the Carefree, Sempre Livre and o.b. brands — for $284M on a cash- and debt-free basis, expanding its Latin America feminine care platform. The unit generated ~BRL 800M in trailing net sales; closing is expected Q2 2027, contingent on the Kimberly-Clark/Kenvue transaction completing.", value:"$284M", val:0.284, src:"Essity Press Release / PR Newswire", srcDate:"Aug 20", url:"https://www.essity.com/media/press-release/essity-acquires-feminine-care-business-in-brazil/9dd724cebbb532f5/"},
+  {date:"2026-08-19", co:"Proya", also:["Ulta"], cat:"part", sec:"Skincare", geo:"North America", hi:true, head:"PROYA partners with Ulta Beauty to enter US prestige skincare", sum:"Chinese skincare brand PROYA will join Ulta Beauty's prestige portfolio, launching its Advanced Firming and Original Repair collections in 400 stores nationwide and online this November. No financial terms were disclosed.", value:"—", val:0.0, src:"PR Newswire", srcDate:"Aug 19", url:"https://www.prnewswire.com/news-releases/proya-partners-with-ulta-beauty-joining-the-retailers-prestige-skincare-portfolio-later-this-year-302855353.html"},
+  {date:"2026-08-19", co:"Estée Lauder", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:true, head:"Estée Lauder returns to growth as FY2026 sales rise 5% and margins expand", sum:"Full-year net sales reached $15.05B with 3% organic growth, marking a return to growth after a difficult stretch; Q4 organic sales rose 5% and operating margin expanded 320bps for the year. Shares jumped on a bullish FY2027 outlook.", value:"—", val:0.0, src:"The Estée Lauder Companies", srcDate:"Aug 19", url:"https://www.elcompanies.com/en/news-and-media/newsroom/press-releases/2026/08-19-2026-110037466"},
+  {date:"2026-08-19", co:"Coty", also:[], cat:"earn", sec:"Fragrance", geo:"Global", hi:true, head:"Coty beats Q4 revenue expectations but losses widen, and names Soraya Benchikh CFO", sum:"Q4 sales for the year ended 30 June rose 1% with like-for-like improving sequentially to -1%, despite an estimated 1% drag from the Middle East conflict. Sales, profit and cash flow came in ahead of expectations on cost control, but the quarterly loss widened and guidance is for a low-to-mid single-digit revenue decline. Former British American Tobacco finance chief Soraya Benchikh becomes CFO.", value:"—", val:0.0, src:"Coty", srcDate:"Aug 19", url:"https://www.coty.com/news/coty-announces-fourth-quarter-fiscal-year-2026-results"},
+  {date:"2026-08-19", co:"Silicon2", also:["CVC Capital Partners"], cat:"fund", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"CVC Capital invests KRW300B in K-beauty distributor Silicon2", sum:"CVC Asia will acquire a 9.23% stake in Korean K-beauty distribution platform Silicon2 via newly issued convertible shares, valuing the company at an enterprise value of roughly $2.1B. Proceeds will fund international distribution and logistics expansion.", value:"$215M", val:0.215, src:"Global Cosmetics News", srcDate:"Aug 19", url:"https://www.globalcosmeticsnews.com/cvc-capital-invests-krw300-billion-in-k-beauty-distributor-silicon2/"},
+  {date:"2026-08-19", co:"River Associates", also:[], cat:"mna", sec:"Body Care", geo:"North America", hi:false, head:"River Associates acquires personal care manufacturer Diamond Wipes", sum:"The Chattanooga private equity firm acquired Diamond Wipes, a North American contract manufacturer of disposable wet wipes and liquid-fill personal care products, from Nolan Capital. The transaction closed on 7 August and was funded from River VIII; add-on acquisitions are planned. Terms undisclosed.", value:"Undisclosed", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 19", url:"https://www.globalcosmeticsnews.com/river-associates-acquires-personal-care-manufacturer-diamond-wipes/"},
+  {date:"2026-08-18", co:"Amorepacific", also:[], cat:"part", sec:"Skincare", geo:"Asia-Pacific", hi:false, head:"Amorepacific takes Mamonde into India in an exclusive Nykaa partnership", sum:"Mamonde debuted in India exclusively on Nykaa, the country's largest beauty platform, with ten products built around its Rose HA and Peony BHA lines and Hyper-Flora technology. The launch extends Amorepacific's K-beauty push beyond its Americas and EMEA momentum into a fast-growing market.", value:"Undisclosed", val:0.0, src:"Amorepacific", srcDate:"Aug 18", url:"https://www.apgroup.com/int/en/news/2026-08-18-1.html"},
+  {date:"2026-08-14", co:"Douglas", also:[], cat:"earn", sec:"Multi-category", geo:"Europe", hi:true, head:"Douglas Q3 sales slip 2% and adjusted EBITDA falls 19.4% as it reviews its store network", sum:"Group sales fell 2.0% to €987.8M with like-for-like down 4.5% and adjusted EBITDA down 19.4% to €127.5M, on weak premium demand in Germany, France and the Netherlands. Guidance for FY25/26 was held at €4.58–4.63B revenue and a 15% adjusted EBITDA margin; exclusive brands grew double digits.", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 14", url:"https://www.globalcosmeticsnews.com/douglas-group-accelerates-e-commerce-focus-as-q3-sales-decline/"},
+  {date:"2026-08-14", co:"Sephora", also:[], cat:"part", sec:"Multi-category", geo:"Middle East & Africa", hi:false, head:"Sephora partners with Glam42 to bring Sephora Collection to Israel", sum:"A distribution partnership putting the Sephora Collection own-brand range into the Israeli market through local operator Glam42, extending the retailer's Middle East footprint.", value:"Undisclosed", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 14", url:"https://www.globalcosmeticsnews.com/sephora-partners-with-glam42-to-bring-sephora-collection-to-israel/"},
+  {date:"2026-08-13", co:"Haleon", also:[], cat:"fund", sec:"Multi-category", geo:"Global", hi:true, head:"Haleon prices a $2B three-tranche bond to refinance 2027 maturities", sum:"Haleon Capital priced $600M of 4.625% notes due 2029, $600M of 4.875% due 2031 and $800M of 5.375% due 2036, settling 21 August. Proceeds repurchase the 2027 notes tendered on 11 August and fund general corporate purposes.", value:"$2B", val:2.0, src:"Investing.com", srcDate:"Aug 13", url:"https://www.investing.com/news/company-news/haleon-prices-2bn-bond-offering-across-three-tranches-93CH-4856936"},
+  {date:"2026-08-11", co:"Natura &Co", also:[], cat:"earn", sec:"Multi-category", geo:"Latin America", hi:true, head:"Natura &Co profit plunges 92% in Q2 as Brazil pressure deepens", sum:"Net income from continuing operations fell 92% year-on-year to R$35M (from R$446M) on a 9.1% consolidated revenue decline to R$5.17B, badly missing consensus. Brazil revenue dropped 14.8% to R$3.07B with the Natura brand down 14.5% and Avon down 22.5%, while Hispanic markets grew on a constant-currency basis.", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Aug 11", url:"https://cosmeticsbusiness.com/natura-profits-slump-92-q2-2026-brazil-pressure"},
+  {date:"2026-08-11", co:"Kenvue", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:true, head:"Kenvue's beauty sales rise 5.1% as Neutrogena and OGX drive Q2 growth", sum:"Kenvue's Skin Health and Beauty division posted 5.1% organic sales growth in Q2 2026, with 3.7% underlying organic growth split between 2.7 points of favourable value realisation and 1 point of volume. Neutrogena extended household-penetration gains for a third straight quarter in the US, with Hair Care and Face Care leading regional performance.", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 11", url:"https://www.globalcosmeticsnews.com/kenvues-beauty-sales-rise-5-1-as-neutrogena-and-ogx-drive-q2-growth/"},
+  {date:"2026-08-11", co:"Ashland", also:[], cat:"mna", sec:"Multi-category", geo:"North America", hi:true, rumor:true, head:"Ashland explores sale after takeover interest from PE firms", sum:"Specialty ingredients supplier Ashland, valued around $3.5B, has engaged Citigroup and Lazard to explore a potential sale after inbound interest from Advent, Apollo and Carlyle, plus major shareholder Standard Industries. The process follows pressure from activist investor Ancora Holdings; a transaction is not certain.", value:"$3.5B mkt cap", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 11", url:"https://www.globalcosmeticsnews.com/ashland-explores-potential-sale-following-takeover-interest/"},
+  {date:"2026-08-11", co:"APR", also:[], cat:"earn", sec:"Skincare", geo:"Asia-Pacific", hi:true, head:"APR's Q2 cosmetics revenue surges 185% on North America and Europe expansion", sum:"South Korean beauty group APR (Medicube) posted Q2 revenue of KRW767.5B, up 134.2% year-on-year, with operating profit up 134.5% to KRW190.6B at a 24.8% margin. Cosmetics revenue jumped 185.5% to KRW648.3B, with North America up 264.6% and Europe up 380.3%; overseas sales now account for 92% of the total.", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 11", url:"https://www.globalcosmeticsnews.com/apr-posts-record-q2-as-cosmetics-revenue-jumps-186/"},
+  {date:"2026-08-11", co:"Vyrao", also:[], cat:"mna", sec:"Fragrance", geo:"Europe", hi:false, rumor:true, head:"Fragrance brand Vyrao nears sale to undisclosed buyer", sum:"British fragrance and wellness brand Vyrao, backed by Estée Lauder's New Incubation Ventures and L Catterton, is reportedly close to being acquired by an undisclosed buyer after five years of independent growth across the UK, US, Australia and Japan. Deal value and buyer identity remain unconfirmed.", value:"—", val:0.0, src:"TheIndustry.beauty", srcDate:"Aug 11", url:"https://theindustry.beauty/vyrao-nears-sale-new-owner-fragrance-brand/"},
+  {date:"2026-08-11", co:"PZ Cussons", also:[], cat:"earn", sec:"Body Care", geo:"Europe", hi:false, head:"PZ Cussons FY26 profit climbs as St.Tropez returns to North American growth", sum:"PZ Cussons reported FY26 revenue of £541.4M, up 5.4% (5.8% like-for-like), with adjusted operating profit up 8.4% to £59.5M — up 24.5% excluding the divested PZ Wilmar joint venture. Self-tanning brand St.Tropez returned to growth in its key North American market, and each of the group's top ten brands grew during the year.", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 11", url:"https://www.globalcosmeticsnews.com/pz-cussons-fy26-profit-rises-as-st-tropez-returns-to-growth/"},
+  {date:"2026-08-11", co:"Haleon", also:[], cat:"fund", sec:"Multi-category", geo:"Global", hi:false, head:"Haleon launches a tender offer for $1.999B of 2027 notes", sum:"A cash tender for the outstanding 3.375% fixed-rate senior notes due March 2027, opening a refinancing of the group's near-term maturities.", value:"$1.999B", val:2.0, src:"Investing.com", srcDate:"Aug 11", url:"https://www.investing.com/news/company-news/haleon-unit-launches-tender-offer-for-2-billion-2027-notes-93CH-4851732"},
+  {date:"2026-08-11", co:"Edgewell", also:[], cat:"earn", sec:"Body Care", geo:"North America", hi:false, head:"Edgewell returns to organic growth as Q3 earnings beat expectations", sum:"Edgewell Personal Care posted Q3 net sales of $570.1M, up 1.7%, with organic sales growth of 1.1% and adjusted EPS of $0.72 beating guidance. North America organic sales rose 3% on higher Sun Care, Skin Care and Grooming volumes, while international organic sales fell 1.4%.", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 11", url:"https://www.globalcosmeticsnews.com/edgewell-personal-care-returns-to-organic-growth-as-q3-earnings-beat-expectations/"},
+  {date:"2026-08-11", co:"Cymbiotika", also:[], cat:"fund", sec:"Multi-category", geo:"North America", hi:false, head:"Cymbiotika adds Alix Earle as investor in liposomal supplement brand", sum:"Influencer Alix Earle has taken an undisclosed investment stake in Cymbiotika, joining a celebrity roster including Kendall Jenner, Hailey Bieber and The Weeknd. The bioactive supplement brand generated $150M in revenue last year and previously closed a $25M seed round in January 2026.", value:"Undisclosed", val:0.0, src:"TheIndustry.beauty", srcDate:"Aug 11", url:"https://theindustry.beauty/cymbiotika-secures-new-funding-as-premium-supplement-market-heats-up/"},
+  {date:"2026-08-11", co:"AKT London", also:[], cat:"fund", sec:"Body Care", geo:"Europe", hi:false, head:"AKT London launches 'Final Encore' community crowdfunding round", sum:"UK natural-deodorant brand AKT London opened a new community investment round, billed as its last raise of this kind, to let customers invest ahead of its next growth phase. Over 1,000 people pre-registered within 24 hours; the funding target was not disclosed.", value:"Undisclosed", val:0.0, src:"TheIndustry.beauty", srcDate:"Aug 11", url:"https://theindustry.beauty/akt-london-launches-crowdfunding-campaign/"},
+  {date:"2026-08-10", co:"Aroma-Zone", also:["Eurazeo"], cat:"fund", sec:"Multi-category", geo:"Europe", hi:true, head:"Eurazeo to invest €410M in Aroma-Zone, taking control of French natural-beauty DTC", sum:"Private equity firm Eurazeo has signed an exclusivity agreement to invest roughly €410M in Aroma-Zone, becoming the French natural beauty and aromatherapy retailer's main shareholder while the founding Vausselin family keeps a significant stake. Proceeds fund international expansion, the French e-commerce platform, and new stores beyond its current seven-store footprint.", value:"€410M", val:0.45, src:"Global Cosmetics News", srcDate:"Aug 10", url:"https://www.globalcosmeticsnews.com/eurazeo-plans-eur410-million-investment-in-aroma-zone-to-accelerate-expansion/"},
+  {date:"2026-08-06", co:"Kenvue", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:false, head:"Kenvue reports second-quarter 2026 results", sum:"Second-quarter results released before market open, with the Skin Health and Beauty division's organic growth the key datapoint ahead of the Kimberly-Clark close.", value:"—", val:0.0, src:"Business Wire", srcDate:"Aug 6", url:"https://www.businesswire.com/news/home/20260723599147/en/Kenvue-to-Announce-Second-Quarter-2026-Results-on-August-6-2026"},
+  {date:"2026-08-05", co:"e.l.f. Beauty", also:[], cat:"earn", sec:"Color Cosmetics", geo:"North America", hi:true, head:"e.l.f. Beauty raises FY2027 outlook as Q1 net sales jump 36%", sum:"Q1 fiscal 2027 net sales rose 36% to $479.4M against roughly $431M consensus, with adjusted net income of $104.6M (from $51.3M) and adjusted EPS of $1.75 versus $0.71 expected. Management lifted full-year FY27 guidance to 18-20% net sales growth from 12-14%, and to $1.93-1.96B in sales from $1.83-1.86B.", value:"—", val:0.0, src:"CNBC", srcDate:"Aug 5", url:"https://www.cnbc.com/2026/08/05/elf-beauty-elf-q1-2027-earnings.html"},
+  {date:"2026-08-05", co:"Shiseido", also:[], cat:"earn", sec:"Skincare", geo:"Asia-Pacific", hi:true, head:"Shiseido H1 operating profit climbs 132% as restructuring takes hold", sum:"First-half net sales rose 6.2% to ¥499.0B with core operating profit up 90.1% to ¥44.4B and operating profit up 131.8% to ¥41.9B. China and Travel Retail sales rose 10.0% reported to ¥191.4B, with Clé de Peau Beauté and NARS driving the 618 festival.", value:"¥499.0B rev", val:0.0, src:"Shiseido Investor Relations", srcDate:"Aug 5", url:"https://corp.shiseido.com/en/news/"},
+  {date:"2026-08-05", co:"Beiersdorf", also:[], cat:"earn", sec:"Skincare", geo:"Europe", hi:true, head:"Beiersdorf guides to a full-year sales decline as Nivea drops 6.8%", sum:"CEO Vincent Warnery said the group needs to acquire brands to dilute its reliance on Nivea after the flagship fell 6.8% in H1 2026. Beiersdorf now expects organic sales to decline in the low single digits for the full year.", value:"—", val:0.0, src:"Cosmetics Business", srcDate:"Aug 5", url:"https://cosmeticsbusiness.com/beiersdorf-eyes-acquisitions"},
+  {date:"2026-08-05", co:"LG H&H", also:[], cat:"mna", sec:"Color Cosmetics", geo:"Asia-Pacific", hi:false, head:"LG H&H discontinues colour brand TIPSY as portfolio narrows to ten priorities", sum:"LG Household & Health Care is winding down TIPSY, the colour cosmetics brand acquired via its 2020 majority stake in Roa Korea, after it failed to regain traction against social-first indie rivals. Investment shifts to ten priority brands including The History of Whoo, CNP, Belif and Dr. Groot under CEO Lee Sunjoo's restructuring. Terms undisclosed.", value:"Undisclosed", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 5", url:"https://www.globalcosmeticsnews.com/lg-household-health-care-discontinues-tipsy-as-portfolio-restructuring-continues/"},
+  {date:"2026-08-05", co:"Bodycare", also:[], cat:"fund", sec:"Multi-category", geo:"Europe", hi:false, head:"Bodycare secures Arāya Ventures-led investment for AI-powered retail rollout", sum:"UK health-and-beauty retailer Bodycare raised an undisclosed round led by Arāya Ventures, joined by entrepreneur Dilesh Mehta and a syndicate of retail, technology and consumer-brand investors. Proceeds fund its AIMEE AI platform, new Studio Stores in Derby and Leicester, and creator-led commerce.", value:"Undisclosed", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 5", url:"https://www.globalcosmeticsnews.com/bodycare-secures-investment-to-accelerate-ai-powered-health-and-beauty-retail-strategy/"},
+  {date:"2026-08-04", co:"Procter & Gamble", also:[], cat:"mna", sec:"Multi-category", geo:"North America", hi:true, head:"P&G to acquire supplements maker Thorne for $3.8B in premium wellness push", sum:"P&G is buying Thorne in an all-cash $3.8B deal from LVMH-backed L Catterton, its largest step yet into premium wellness and personal health alongside Metamucil, Align and New Chapter. Thorne passed $500M revenue in 2025 and tracks toward roughly $650M this year, skewing under-40 and direct-to-consumer; the exit marks a more than $3B return for L Catterton, which took it private at $680M in 2023.", value:"$3.8B", val:3.8, src:"CNBC", srcDate:"Aug 4", url:"https://www.cnbc.com/2026/08/04/procter-gamble-will-acquire-supplements-brand-thorne.html"},
+  {date:"2026-08-04", co:"LG H&H", also:[], cat:"earn", sec:"Multi-category", geo:"Asia-Pacific", hi:true, head:"LG H&H Q2 operating profit up 87.5% as North America overtakes China", sum:"Q2 consolidated revenue rose 3.3% to KRW1.6574tn with operating profit up 87.5% to KRW102.8B. North American revenue surged 47.3% to KRW205.8B, passing China's KRW176B for the first time, while overseas revenue grew 12.6% to KRW584.5B. The Beauty division returned to profit on 3.9% revenue growth.", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 4", url:"https://www.globalcosmeticsnews.com/lg-household-health-care-reports-strong-q2-2026-growth-as-north-america-overtakes-china/"},
+  {date:"2026-08-04", co:"Oriflame", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:false, head:"Oriflame Q2 sales fall 13% as transformation programme grinds on", sum:"Q2 sales dropped 13% in both euros and local currencies, with adjusted EBITDA swinging to a €4.7M loss on lower volumes, inventory provisions and excess-stock liquidation. Latin America grew 6% while Europe & CIS, Turkey & Africa and Asia all declined; adjusted cash flow before financing stayed positive at €8.6M.", value:"—", val:0.0, src:"Global Cosmetics News", srcDate:"Aug 4", url:"https://www.globalcosmeticsnews.com/oriflame-advances-transformation-strategy-despite-first-half-sales-decline/"},
+  {date:"2026-08-03", co:"Boots", also:[], cat:"mna", sec:"Multi-category", geo:"Europe", hi:false, rumor:true, head:"Boots £7B takeover talks stall after Weston family lowers its offer", sum:"Sycamore Partners rejected a reduced bid from the Weston family's Wittington Investments for Boots, leaving the roughly £7B ($9.4B) sale in doubt with a source close to talks putting revival at 50/50. The Westons cut their offer after Sigma Healthcare's June exit left them sole bidder; Sycamore is expected to restart IPO plans next year if no deal lands.", value:"£7B talks", val:0.0, src:"TheIndustry.beauty", srcDate:"Aug 3", url:"https://theindustry.beauty/boots-takeover-talks-stall-after-weston-family-lowers-offer/"},
+  {date:"2026-08-03", co:"Beiersdorf", also:[], cat:"earn", sec:"Multi-category", geo:"Europe", hi:false, head:"Beiersdorf cuts FY2026 guidance and resolves an 18-month NIVEA turnaround", sum:"H1 group sales fell 3.5% organically to €5.0B with NIVEA down 6.8% on customer conflicts, delayed seasonal demand and trade destocking, while derma brands Eucerin and Aquaphor grew 7.8%. The board resolved an 18-month NIVEA turnaround with an additional €100M of consumer-facing marketing in H2 and now guides to a low-single-digit organic sales decline for the year.", value:"€100M", val:0.1, src:"Beiersdorf IR", srcDate:"Aug 3", url:"https://www.beiersdorf.com/newsroom/press-news/all-news/2026/08/03-beiersdorf-adjusts-guidance-for-the-full-year-2026"},
+  {date:"2026-07-30", co:"L'Oréal", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:true, head:"L'Oréal H1 growth accelerates to 6.5% with a record 21.3% operating margin", sum:"First-half sales of €23.7B, up 5.8% reported despite a 2.8-point currency headwind, with adjusted like-for-like growth of 6.5% — more than double H1 2025's 3.2% — and a first-half record operating margin of 21.3%.", value:"€23.7B rev", val:0.0, src:"L'Oréal Finance", srcDate:"Jul 30", url:"https://www.loreal-finance.com/eng/press-release/2026-half-year-results"},
+  {date:"2026-07-30", co:"Amorepacific", also:[], cat:"earn", sec:"Skincare", geo:"Asia-Pacific", hi:true, head:"Amorepacific Q2 operating profit surges 53% as overseas revenue jumps 28%", sum:"Group revenue of KRW1.2543tn with operating profit up 53% to KRW122.8B. At the flagship Amorepacific unit overseas revenue rose 28% and overseas operating profit nearly doubled, up 99%, led by the Americas and EMEA.", value:"—", val:0.0, src:"Amorepacific", srcDate:"Jul 30", url:"https://www.apgroup.com/int/en/news/2026-07-30-1.html"},
+  {date:"2026-07-30", co:"Amorepacific", also:[], cat:"earn", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"Amorepacific Group Q2 operating profit jumps 53.3% on Americas and EMEA strength", sum:"Group Q2 revenue rose 14.6% to KRW1.25tn with operating profit up 53.3% to KRW122.8B, beating consensus. Americas and EMEA revenue climbed 28% with operating profit up 99%, while Greater China declined on channel optimisation. The group held a double-digit operating margin for a second consecutive quarter.", value:"—", val:0.0, src:"Seoul Economic Daily", srcDate:"Jul 30", url:"https://en.sedaily.com/finance/2026/07/30/amorepacific-group-q2-operating-profit-jumps-533-percent-to"},
+  {date:"2026-07-29", co:"Procter & Gamble", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:true, head:"P&G Beauty net sales rise 7% to $16.0B in fiscal 2026", sum:"Fourth-quarter and full-year results: the Beauty division was among the group's strongest, with annual net sales up 7% to $16.0B on hair care and premium skincare including SK-II. Beauty organic sales rose 4% in Q4 after 7% in Q3.", value:"$16.0B div. rev", val:0.0, src:"CNBC", srcDate:"Jul 29", url:"https://www.cnbc.com/2026/07/29/procter-gamble-pg-q4-2026-earnings.html"},
+  {date:"2026-07-28", co:"Unilever", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:true, head:"Unilever posts its best first half in a decade, Beauty & Wellbeing up 5.9%", sum:"Group underlying sales grew 4.8% with volume contributing 4.2 points — the strongest volume-led first half in ten years. Beauty & Wellbeing rose 5.9% (4.5% volume), led by double-digit volume growth at Dove, Sunsilk and Vaseline plus prestige beauty.", value:"—", val:0.0, src:"Unilever", srcDate:"Jul 28", url:"https://www.investegate.co.uk/announcement/rns/unilever--ulvr/2026-first-half-results/9689925"},
+  {date:"2026-07-27", co:"LVMH", also:[], cat:"earn", sec:"Fragrance", geo:"Global", hi:true, head:"LVMH Perfumes & Cosmetics holds flat at €3.9B as second-quarter growth accelerates", sum:"Half-year revenue of €38.6B with organic growth of 2%, accelerating to 3% in Q2. Perfumes & Cosmetics was stable organically at €3.9B with a slightly higher operating margin, helped by Dior's J'adore Intense and Dior Addict launches, Guerlain and Maison Francis Kurkdjian.", value:"€3.9B div. rev", val:0.0, src:"GlobeNewswire", srcDate:"Jul 27", url:"https://www.globenewswire.com/news-release/2026/07/27/3333733/0/en/lvmh-accelerating-growth-in-the-second-quarter-solid-first-half-results.html"},
+  {date:"2026-07-23", co:"Amorepacific", also:[], cat:"mna", sec:"Multi-category", geo:"Asia-Pacific", hi:true, head:"Amorepacific to sell regional offices and logistics centres to fund overseas push", sum:"Amorepacific is divesting domestic property — regional offices in Busan, Daegu, Daejeon and Gwangju plus logistics centres in Incheon and Gimhae — targeting roughly KRW150B (~$109M) to redirect capital toward its goal of 70% overseas revenue and KRW15tn sales by 2035. A group-level asset-efficiency programme, not a brand sale.", value:"~KRW150B", val:0.11, src:"Global Cosmetics News", srcDate:"Jul 23", url:"https://www.globalcosmeticsnews.com/amorepacific-reshapes-domestic-asset-portfolio-to-support-global-growth-strategy/"},
+  {date:"2026-07-22", co:"Amorepacific", also:[], cat:"mna", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"Amorepacific to sell Anseong inner-beauty plant, consolidate output at Osan", sum:"Amorepacific is seeking a buyer for its Anseong health-supplement plant (KRW204.7B annual capacity, ~46% utilisation last year), which makes its Vital Beauty inner-beauty line, shifting production to its larger Osan complex to lift capital efficiency. Sale price undisclosed.", value:"Undisclosed", val:0.0, src:"Global Cosmetics News", srcDate:"Jul 22", url:"https://www.globalcosmeticsnews.com/amorepacific-plans-sale-of-inner-beauty-manufacturing-plant-to-improve-capital-efficiency/"},
+  {date:"2026-07-21", co:"LG H&H", also:["Amorepacific"], cat:"mna", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"LG H&H launches auction for beverage unit Haitai HTB as K-beauty majors refocus", sum:"LG H&H is running preliminary auctions for Haitai HTB, Korea's third-largest beverage company (~KRW343B annual sales), to concentrate on cosmetics as indie K-beauty brands gain share — paralleling Amorepacific's own asset disposals. Price undisclosed; intent letters expected this month.", value:"Undisclosed", val:0.0, src:"The Korea Times", srcDate:"Jul 21", url:"https://www.koreatimes.co.kr/business/companies/20260721/amorepacific-lg-hh-streamline-portfolios-amid-rise-of-indie-k-beauty-brands"},
+  {date:"2026-07-16", co:"Guinness Atkinson", also:["Amorepacific", "LG H&H"], cat:"fund", sec:"Multi-category", geo:"Asia-Pacific", hi:true, head:"First US-listed K-beauty ETF filed with the SEC", sum:"US asset manager Guinness Atkinson filed a preliminary prospectus for the K-Beauty ETF (KBTY), set for NYSE Arca in H2 — at least 80% in South Korean beauty names spanning brand owners, contract manufacturers, ingredient suppliers, retailers and dermatology. A first dedicated public-markets vehicle for the sector.", value:"ETF filing", val:0.0, src:"Seoul Economic Daily / Global Cosmetics News", srcDate:"Jul 16", url:"https://en.sedaily.com/finance/2026/07/16/first-k-beauty-etf-set-to-debut-on-us-market-including"},
+  {date:"2026-07-16", co:"Avon", also:["Natura &Co"], cat:"fund", sec:"Multi-category", geo:"Europe", hi:false, head:"Avon signs lease at The Rowe for a consolidated London headquarters", sum:"Avon took 15,234 sq ft of fitted office space at Frasers Property UK's Whitechapel development, folding its London teams into a single site. Lease value undisclosed — a footprint decision rather than a capital commitment.", value:"Undisclosed", val:0.0, src:"Global Cosmetics News", srcDate:"Jul 16", url:"https://www.globalcosmeticsnews.com/avon-selects-the-rowe-as-new-london-headquarters/"},
+  {date:"2026-07-15", co:"Harvey Nichols", also:["Frasers Group", "Next"], cat:"mna", sec:"Multi-category", geo:"Europe", hi:false, rumor:true, head:"Frasers Group forces its way into the Harvey Nichols sale process", sum:"A memo to suppliers said Harvey Nichols is now obliged to admit Frasers alongside other bidders including Next, with initial bids expected later in July. Reported via Sky News, not an official announcement; several brand owners have raised concerns over the luxury positioning of the beauty halls.", value:"—", val:0.0, src:"TheIndustry.beauty", srcDate:"Jul 15", url:"https://theindustry.beauty/frasers-group-enters-harvey-nichols-group-sales-process-despite-supplier-concerns/"},
+  {date:"2026-07-14", co:"IM8", also:["Prenetics", "General Catalyst"], cat:"fund", sec:"Multi-category", geo:"North America", hi:true, head:"Prenetics' IM8 secures $1B growth financing from General Catalyst", sum:"General Catalyst's Customer Value Fund will finance up to 70% of IM8's marketing spend in return for a capped share of revenue — structured as a loan, not venture equity. The Beckham-co-founded supplement brand reported ~$17M revenue in June and projects a $300M run-rate by year-end.", value:"$1B", val:0.0, src:"GlobeNewswire / Bloomberg", srcDate:"Jul 14", url:"https://www.globenewswire.com/news-release/2026/07/14/3327198/0/en/prenetics-im8-secures-1-billion-growth-financing-from-general-catalyst-s-customer-value-fund-cvf.html"},
+  {date:"2026-07-13", co:"Shein", also:["LG H&H", "Amorepacific"], cat:"fund", sec:"Multi-category", geo:"Asia-Pacific", hi:true, head:"Shein secures CSRC approval for a Hong Kong IPO", sum:"China's securities regulator has cleared Shein to proceed with a Hong Kong listing — a capital-markets and distribution-scale event for the K-beauty houses that reach shoppers through its cross-border marketplace.", value:"IPO", val:0.0, src:"Global Cosmetics News", srcDate:"Jul 13", url:"https://www.globalcosmeticsnews.com/"},
+  {date:"2026-07-13", co:"Kenvue", also:["Kimberly-Clark"], cat:"mna", sec:"Multi-category", geo:"North America", hi:true, head:"US appeals court revives Tylenol autism suits, clouding the $48.7B Kimberly-Clark deal", sum:"The Second Circuit reinstated more than 500 private claims tying prenatal Tylenol use to autism and ADHD, ruling expert testimony had been improperly excluded. Kenvue shares fell about 2%, adding litigation risk to the pending Kimberly-Clark acquisition.", value:"—", val:0.0, src:"CNBC", srcDate:"Jul 13", url:"https://www.cnbc.com/2026/07/13/us-appeals-court-revives-private-lawsuits-linking-tylenol-to-autism.html"},
+  {date:"2026-07-12", co:"Rituals", also:[], cat:"fund", sec:"Body Care", geo:"Europe", hi:false, head:"Rituals commits €40M to refresh 1,500 boutiques across 30 countries", sum:"A retail-capital programme beginning 3 August, with the first European phase completing 25 September — continued investment in prestige body and home ranges after 2025 revenue of €2.43B, up 15.7%.", value:"€40M", val:0.0, src:"365 Retail / WWD", srcDate:"Jul 12", url:"https://365retail.co.uk/rituals-plans-e40m-refit-across-1500-boutiques/"},
+  {date:"2026-07-11", co:"Coty", also:["Megan Thee Stallion", "Ulta"], cat:"part", sec:"Fragrance", geo:"North America", hi:false, head:"Megan Thee Stallion's Coty fragrance reaches Ulta stores nationwide", sum:"Hot Girl Summer Eau de Parfum ($29–$84) reached Ulta shelves on 11 July — the retail rollout of the Coty celebrity-fragrance partnership announced 2 July.", value:"Retail launch", val:0.0, src:"PR Newswire / Ulta", srcDate:"Jul 11", url:"https://www.prnewswire.com/news-releases/megan-thee-stallion-enters-fragrance-industry--introduces-new-hot-girl-summer-eau-de-parfum-302816107.html"},
+  {date:"2026-07-10", co:"Essential Parfums", also:["Style Capital"], cat:"fund", sec:"Fragrance", geo:"Europe", hi:false, head:"Style Capital takes a minority stake in Essential Parfums", sum:"The Italian private-equity fund backs the Parisian clean-fragrance house — continued institutional appetite for indie perfume in the prestige tier.", value:"Minority", val:0.0, src:"TheIndustry.beauty", srcDate:"Jul 10", url:"https://theindustry.beauty/"},
+  {date:"2026-07-07", co:"L'Oréal", also:[], cat:"part", sec:"Fragrance", geo:"Europe", hi:true, head:"L'Oréal secures a 50-year exclusive worldwide beauty licence for Gucci", sum:"Kering and L'Oréal brought the Gucci beauty licence forward by a year. L'Oréal takes over creation, development and distribution of Gucci fragrance and beauty from 1 July 2027, subject to regulatory approvals — an extension of the October 2025 alliance.", value:"50-year licence", val:0.0, src:"GlobeNewswire", srcDate:"Jul 7", url:"https://www.globenewswire.com/news-release/2026/07/07/3323630/0/en/kering-announces-that-gucci-and-l-or%C3%A9al-have-entered-into-a-50-year-exclusive-beauty-licence-agreement-one-year-ahead-of-schedule.html"},
+  {date:"2026-07-07", co:"Coty", also:[], cat:"mna", sec:"Fragrance", geo:"Global", hi:true, head:"Coty agrees to hand the Gucci Beauty licence back to Kering for about $400M", sum:"Coty receives roughly $400M to transition the Gucci Beauty licence early, and will continue operating the brand through at least 30 June 2027. The exit removes a major franchise from Coty's prestige portfolio.", value:"$400M", val:0.4, src:"Coty", srcDate:"Jul 7", url:"https://www.coty.com/news/coty-announces-agreement-with-kering-for-early-transition-of-gucci-beauty-license"},
+  {date:"2026-07-07", co:"Henkel", also:[], cat:"mna", sec:"Haircare", geo:"Europe", hi:false, head:"Henkel closes its acquisition of Olaplex", sum:"The $1.4B purchase of the prestige hair care brand completed, bringing Olaplex into Henkel's Consumer Brands hair portfolio alongside Schwarzkopf.", value:"—", val:0.0, src:"Henkel", srcDate:"Jul 7", url:"https://www.henkel.com/press-and-media/press-releases-and-kits/2026-07-07-henkel-successfully-closes-acquisition-of-premium-hair-care-brand-olaplex-2193832"},
+  {date:"2026-06-18", co:"L'Oréal", also:[], cat:"mna", sec:"Multi-category", geo:"Asia-Pacific", hi:false, head:"L'Oréal takes a majority stake in Indian personal care house Innovist", sum:"A majority investment in Innovist, the house behind several fast-growing Indian personal care brands, marking a significant step up in L'Oréal's exposure to India's expanding beauty market. Terms undisclosed.", value:"Undisclosed", val:0.0, src:"L'Oréal", srcDate:"Jun 18", url:"https://www.loreal.com/en/press-release/"},
+  {date:"2026-06-02", co:"Ulta", also:[], cat:"earn", sec:"Multi-category", geo:"North America", hi:true, head:"Ulta Beauty Q1 net sales rise 11.1% to $3.2B as comps gain 5.3%", sum:"First-quarter net sales grew 11.1% to $3.2B with comparable sales up 5.3% — a 3.7% higher average ticket and 1.6% more transactions — and the company updated its fiscal 2026 guidance.", value:"$3.2B rev", val:0.0, src:"Ulta Beauty Investor Relations", srcDate:"Jun 2", url:"https://www.businesswire.com/news/home/20260602303814/en/Ulta-Beauty-Announces-First-Quarter-Fiscal-2026-Results-and-Updates-Fiscal-2026-Guidance"},
+  {date:"2026-05-28", co:"Church & Dwight", also:[], cat:"mna", sec:"Multi-category", geo:"North America", hi:false, head:"Church & Dwight acquires stain-removal brand Miss Mouth's Messy Eater for about $325M", sum:"A bolt-on that extends the household and personal-care portfolio into specialist stain removal, at a price of roughly $325M.", value:"$325M", val:0.325, src:"SEC Form 8-K", srcDate:"May 28", url:"https://www.sec.gov/Archives/edgar/data/0000313927/000119312526199066/chd-ex99_1.htm"},
+  {date:"2026-05-21", co:"Estée Lauder", also:["Puig"], cat:"mna", sec:"Multi-category", geo:"Global", hi:true, head:"Estée Lauder and Puig terminate combination discussions", sum:"The parties ended talks over a potential business combination, closing the door on what would have been a roughly $40B luxury beauty group and leaving Estée Lauder to pursue its turnaround independently.", value:"—", val:0.0, src:"The Estée Lauder Companies", srcDate:"May 21", url:"https://www.elcompanies.com/en/news-and-media/newsroom/press-releases/2026/05-21-2026-210537445"},
+  {date:"2026-05-15", co:"Estée Lauder", also:[], cat:"mna", sec:"Color Cosmetics", geo:"Global", hi:true, head:"Estée Lauder plans to divest Too Faced, Smashbox and Dr.Jart+", sum:"Three brands go up for sale as the portfolio narrows around the highest-return franchises — the colour houses Too Faced and Smashbox plus Korean skincare brand Dr.Jart+. Terms were not disclosed.", value:"Undisclosed", val:0.0, src:"GuruFocus", srcDate:"May 15", url:"https://www.gurufocus.com/news/8863518/este-lauder-plans-to-sell-three-brands-amid-acquisition-talks-with-puig"},
+  {date:"2026-05-12", co:"Shiseido", also:[], cat:"earn", sec:"Skincare", geo:"Asia-Pacific", hi:false, head:"Shiseido Q1 2026 core operating profit jumps 58% despite a China slowdown", sum:"First-quarter core operating profit rose sharply on restructuring benefits, with the Americas turning profitable and the China outlook revised upward even as revenue declined.", value:"—", val:0.0, src:"Shiseido Investor Relations", srcDate:"May 12", url:"https://corp.shiseido.com/en/ir/pdf/ir20260512_284.pdf"},
+  {date:"2026-05-07", co:"Kenvue", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:false, head:"Kenvue reports first-quarter 2026 results", sum:"First-quarter results published before market open, again without a call given the pending Kimberly-Clark deal. Skin Health and Beauty remained the segment investors watched most closely.", value:"—", val:0.0, src:"Kenvue Investor Relations", srcDate:"May 7", url:"https://investors.kenvue.com/financial-news/news-details/2026/Kenvue-to-Announce-First-Quarter-2026-Results-on-May-7-2026/default.aspx"},
+  {date:"2026-05-05", co:"Coty", also:[], cat:"earn", sec:"Fragrance", geo:"Global", hi:false, head:"Coty reports third-quarter fiscal 2026 results", sum:"Results for the quarter ended 31 March 2026, with the Consumer Beauty strategic review — covering CoverGirl, Rimmel, Sally Hansen and Max Factor — still running alongside the prestige fragrance business.", value:"—", val:0.0, src:"Coty", srcDate:"May 5", url:"https://www.coty.com/news/coty-announces-third-quarter-fiscal-year-2026-results"},
+  {date:"2026-05-01", co:"Estée Lauder", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:true, head:"Estée Lauder lifts annual profit forecast while cutting up to 3,000 more jobs", sum:"The company raised its full-year profit outlook and widened its restructuring, now targeting a reduction of 9,000 to 10,000 positions against a prior ceiling of 7,000, as CEO Stéphane de La Faverie pushes the turnaround toward profitability.", value:"—", val:0.0, src:"CNBC", srcDate:"May 1", url:"https://www.cnbc.com/2026/05/01/estee-lauder-plans-to-cut-up-to-3000-more-jobs-lifts-annual-profit-forecast.html"},
+  {date:"2026-04-30", co:"Unilever", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:false, head:"Unilever Q1 2026 underlying sales up 3.8%, Beauty & Wellbeing up 3.6%", sum:"Group underlying sales growth of 3.8% with 2.9% from volume. Beauty & Wellbeing grew 3.6% — 1.9% volume, 1.6% price — on double-digit volume-led growth at Dove and Vaseline plus the prestige portfolio.", value:"—", val:0.0, src:"Unilever", srcDate:"Apr 30", url:"https://www.investegate.co.uk/announcement/rns/unilever--ulvr/q1-2026-trading-statement/9545280"},
+  {date:"2026-04-29", co:"Amorepacific", also:[], cat:"earn", sec:"Skincare", geo:"Asia-Pacific", hi:false, head:"Amorepacific Group posts Q1 2026 revenue of KRW1.227tn", sum:"First-quarter consolidated revenue of KRW1.227tn with operating profit of KRW137.8B, as overseas momentum in the Americas and EMEA continued to offset softness at home.", value:"—", val:0.0, src:"Amorepacific", srcDate:"Apr 29", url:"https://www.apgroup.com/int/en/news/2026-04-29-1.html"},
+  {date:"2026-04-22", co:"L'Oréal", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:false, head:"L'Oréal Q1 2026 sales rise 7.6% like-for-like to €12.15B", sum:"First-quarter sales of €12.15B, up 3.6% reported and 7.6% like-for-like, with adjusted like-for-like growth of 6.7% — comfortably ahead of the global beauty market.", value:"€12.15B rev", val:0.0, src:"GlobeNewswire", srcDate:"Apr 22", url:"https://www.globenewswire.com/news-release/2026/04/22/3279253/0/en/first-quarter-2026-sales.html"},
+  {date:"2026-04-01", co:"Clorox", also:[], cat:"mna", sec:"Body Care", geo:"North America", hi:false, head:"Clorox completes the GOJO acquisition, forming Clorox Purell", sum:"The $2.25B purchase closed and now operates as Clorox Purell, adding the Purell franchise and GOJO's health and hygiene solutions to the portfolio.", value:"—", val:0.0, src:"Clorox Investor Relations", srcDate:"Apr 1", url:"https://investors.thecloroxcompany.com/news/news-details/2026/Clorox-Completes-Acquisition-of-GOJO-Industries-Makers-of-Purell/default.aspx"},
+  {date:"2026-03-26", co:"Henkel", also:[], cat:"mna", sec:"Haircare", geo:"Europe", hi:true, head:"Henkel to acquire Olaplex for $1.4B in a pivot to premium hair care", sum:"An all-cash offer of $2.06 per share for the bond-building hair care pioneer, a roughly 55% premium to the prior close of $1.33. The deal anchors Henkel's move up-market in professional and prestige hair.", value:"$1.4B", val:1.4, src:"Henkel", srcDate:"Mar 26", url:"https://www.henkel.com/press-and-media/press-releases-and-kits/2026-03-26-henkel-to-acquire-premium-hair-care-brand-olaplex-2136290"},
+  {date:"2026-03-23", co:"Estée Lauder", also:["Puig"], cat:"mna", sec:"Multi-category", geo:"Global", hi:true, rumor:true, head:"Estée Lauder confirms merger discussions with Puig", sum:"The two confirmed talks over a potential business combination that analysts valued at more than $40B, which would have brought Clinique, MAC and Tom Ford together with Rabanne and Jean Paul Gaultier. No agreement was reached.", value:"—", val:0.0, src:"Personal Care Insights", srcDate:"Mar 23", url:"https://www.personalcareinsights.com/news/estee-lauder-puig-merger.html"},
+  {date:"2026-03-12", co:"Ulta", also:[], cat:"earn", sec:"Multi-category", geo:"North America", hi:true, head:"Ulta Beauty posts Q4 and fiscal 2025 results, guides to 6–7% growth in fiscal 2026", sum:"Fourth-quarter results for the period ended 31 January 2026, alongside fiscal 2026 guidance of 6.0–7.0% net sales growth, 2.5–3.5% comparable sales growth and 9.4–11.4% diluted EPS growth.", value:"—", val:0.0, src:"Ulta Beauty Investor Relations", srcDate:"Mar 12", url:"https://www.ulta.com/investor/news-events/press-releases/detail/224/ulta-beauty-announces-fourth-quarter-and-fiscal-2025"},
+  {date:"2026-02-17", co:"Kenvue", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:false, head:"Kenvue reports fourth-quarter and full-year 2025 results", sum:"Full-year results released without a conference call because of the pending Kimberly-Clark transaction, with Skin Health and Beauty — Neutrogena, Aveeno, OGX — the segment under closest scrutiny ahead of the merger.", value:"—", val:0.0, src:"Kenvue Investor Relations", srcDate:"Feb 17", url:"https://investors.kenvue.com/financial-news/news-details/2026/Kenvue-to-Announce-Fourth-Quarter-and-Full-Year-2025-Results-on-February-17-2026/default.aspx"},
+  {date:"2026-02-05", co:"Estée Lauder", also:[], cat:"earn", sec:"Multi-category", geo:"Global", hi:false, head:"Estée Lauder reports fiscal 2026 second-quarter results", sum:"Second-quarter results under the turnaround plan, with fragrance the standout and Mainland China outperforming prestige beauty to gain share. Management held to its profit-recovery trajectory.", value:"—", val:0.0, src:"The Estée Lauder Companies", srcDate:"Feb 5", url:"https://www.elcompanies.com/en/news-and-media/newsroom/press-releases/2026/02-05-2026-110042358"},
+  {date:"2026-02-05", co:"Coty", also:[], cat:"earn", sec:"Fragrance", geo:"Global", hi:false, head:"Coty reports second-quarter fiscal 2026 results", sum:"Results for the quarter ended 31 December 2025, with prestige fragrance carrying the group while Consumer Beauty stayed under review following the strategic assessment of the mass colour portfolio.", value:"—", val:0.0, src:"Coty", srcDate:"Feb 5", url:"https://www.coty.com/news/coty-announces-second-quarter-fiscal-year-2026-results"},
+  {date:"2026-01-29", co:"Kimberly-Clark", also:["Kenvue"], cat:"mna", sec:"Multi-category", geo:"North America", hi:false, head:"Kimberly-Clark and Kenvue shareholders overwhelmingly approve the acquisition", sum:"Both sets of stockholders passed every proposal needed to complete the $48.7B combination at their respective special meetings, clearing the principal shareholder hurdle ahead of a targeted second-half 2026 close.", value:"—", val:0.0, src:"Kenvue Investor Relations", srcDate:"Jan 29", url:"https://investors.kenvue.com/financial-news/news-details/2026/Kimberly-Clark-and-Kenvue-Shareholders-Overwhelmingly-Approve-Kimberly-Clarks-Acquisition-of-Kenvue/default.aspx"},
+  {date:"2026-01-22", co:"Clorox", also:[], cat:"mna", sec:"Body Care", geo:"North America", hi:true, head:"Clorox to acquire Purell maker GOJO Industries for $2.25B", sum:"An all-cash definitive agreement for the skin-health and hygiene leader behind Purell. The $2.25B headline includes roughly $330M of anticipated tax benefits, for a net purchase price near $1.92B.", value:"$2.25B", val:2.25, src:"Clorox Investor Relations", srcDate:"Jan 22", url:"https://investors.thecloroxcompany.com/news/news-details/2026/Clorox-Announces-Acquisition-of-GOJO-Industries-Makers-of-Purell-Market-Leader-in-Skin-Health-and-Hygiene/default.aspx"},
+  {date:"2025-12-08", co:"L'Oréal", also:["Galderma"], cat:"mna", sec:"Skincare", geo:"Europe", hi:true, head:"L'Oréal doubles Galderma stake to 20% to deepen its aesthetics play", sum:"L'Oréal buys a further 10% of the Swiss dermatology group from the EQT-led consortium including the Abu Dhabi Investment Authority, taking its holding to 20%. Terms undisclosed; closing expected in Q1 2026, with two L'Oréal board candidates replacing consortium representatives at the 2026 AGM.", value:"Undisclosed", val:0.0, src:"L'Oréal Finance", srcDate:"Dec 8", url:"https://www.loreal-finance.com/eng/press-release/loreal-groupe-reinforce-its-strategic-investment-galderma-additional-10-bringing-its"},
+  {date:"2025-11-02", co:"Kimberly-Clark", also:["Kenvue"], cat:"mna", sec:"Multi-category", geo:"North America", hi:true, head:"Kimberly-Clark to acquire Kenvue for $48.7B, creating a $32B health and wellness leader", sum:"Cash-and-stock deal valuing Kenvue at $21.01 per share — $3.50 cash plus 0.14625 KMB shares, a roughly 46% premium. The combined group targets about $32B of annual revenue and $7B adjusted EBITDA, with roughly $1.9B of cost synergies over three years and Neutrogena and Aveeno joining the portfolio.", value:"$48.7B", val:48.7, src:"Kenvue Investor Relations", srcDate:"Nov 2", url:"https://investors.kenvue.com/financial-news/news-details/2025/Kimberly-Clark-to-Acquire-Kenvue-Creating-a-32-Billion-Global-Health-and-Wellness-Leader/default.aspx"}
+];
+
+// ——— Trade press: general beauty news from the four media houses (rolling 12 months) ———
+const MEDIA = [
+  {date:"2026-10-24", outlet:"WWD", head:"Augustinus Bader Spa Opens at The Mark Hotel", sum:"Described as a \"cocoon\" by Charles Rosier, cofounder and chief executive officer of the luxury skin care brand, the new space will feature three focus rooms, one with a hyperbaric chamber.", srcDate:"Oct 24", url:"https://wwd.com/beauty-industry-news/beauty-features/augustinus-bader-spa-the-mark-1239343921/"},
+  {date:"2026-10-23", outlet:"WWD", head:"How to Do Your Makeup If You’re a Warm Autumn Color Season", sum:"WWD chats with celebrity artists to determine the best techniques and palettes to pick from.", srcDate:"Oct 23", url:"https://wwd.com/pop-culture/culture-news/warm-autumn-makeup-tips-1239383591/"},
+  {date:"2026-10-23", outlet:"WWD", head:"EXCLUSIVE: ‘Love Island USA’ Star Jana Craig Launches New Lash Line", sum:"Debuting direct-to-consumer on Nov. 6, the collection opens with six lash packs and a cluster set.", srcDate:"Oct 23", url:"https://wwd.com/beauty-industry-news/beauty-features/love-island-jana-craig-beauty-launch-1239380824/"},
+  {date:"2026-10-23", outlet:"WWD", head:"4 Female-Founded Luxury Labels Behind Fall’s Most-Wanted Shoes", sum:"Aeyde, Christen, Jude and Paris Texas are transforming the luxury shoe market with beautifully constructed and innovative designs by women, for women.", srcDate:"Oct 23", url:"https://wwd.com/footwear-news/shoe-features/female-founded-luxury-shoe-brands-1239335884/"},
+  {date:"2026-10-23", outlet:"Beauty Independent", head:"Halsey’s Mass-Market Makeup Brand Af94 Shuts Down", sum:"Halsey’s affordable makeup brand Af94 quietly shut down last year, joining a growing list of celebrity beauty ventures that have closed their doors. Launched in 2022 as a lower-priced sister line to the singer’s original makeup brand About-Face, Af94, whose name combines the initials of Halsey’s first and last names, ... The post Halsey’s Mass-Market Makeup Brand Af94 Shuts Down appeared first on ", srcDate:"Oct 23", url:"https://www.beautyindependent.com/halsey-mass-market-makeup-brand-af94-shuts-down/"},
+  {date:"2026-10-23", outlet:"Beauty Independent", head:"9 Emerging Beauty Trends Spotted At BITE 2026, From Scent Formats To Next-Gen Sunscreens", sum:"Some of the most notable trends spotted at last month’s Beauty Independent BITE show weren’t entirely new product categories, but thoughtful reinventions and extensions of existing ones. Brands reimagined aromatherapy with whimsical scented soap bubbles, while emerging beauty markets looked to follow K-Beauty’s path to global prominence. Could B-Beauty, ... The post 9 Emerging Beauty Trends Spotte", srcDate:"Oct 23", url:"https://www.beautyindependent.com/emerging-beauty-trends-bite-2026-scent-formats-next-gen-sunscreens/"},
+  {date:"2026-10-22", outlet:"WWD", head:"P&#038;G’s Boosts Q1 Beauty Sales, but Says It Can Do Better", sum:"Organic sales in the consumer product giant’s beauty business increased 5 percent to $4.4 billion.", srcDate:"Oct 22", url:"https://wwd.com/business-news/financial/procter-gamble-boosts-q1-2027-beauty-sales-1239381875/"},
+  {date:"2026-10-22", outlet:"WWD", head:"New Suitor Emerges in LuisaViaRoma’s Competitve Sale Process", sum:"Arav, the owner of John Richmond and Silvian Heach, could enter a bid to take over the e-tailer against ATO SpA, the holding company that has ensured its business continuity until now.", srcDate:"Oct 22", url:"https://wwd.com/business-news/mergers-acquisitions/arav-fashion-group-new-suitor-luisaviaroma-sale-1239380884/"},
+  {date:"2026-10-22", outlet:"WWD", head:"L’Oréal Reports Q3 2026 Earnings Beat", sum:"The group’s Professional Products and Dermatological Beauty divisions helped drive the 11.9 percent reported quarterly gain.", srcDate:"Oct 22", url:"https://wwd.com/beauty-industry-news/beauty-features/loreal-q3-2026-earnings-beat-1239380825/"},
+  {date:"2026-10-21", outlet:"WWD", head:"Why Typology’s Founder Took Years to Bring His Skin Care Ethos to Italy", sum:"Founder Ning Li talked with WWD about the expansion of his brand, the differences in customers’ behavior across markets and his new venture into niche fragrances.", srcDate:"Oct 21", url:"https://wwd.com/beauty-industry-news/beauty-features/french-beauty-brand-skincare-typology-founder-launch-italy-1239379123/"},
+  {date:"2026-10-21", outlet:"WWD", head:"Inside The Fragrance Foundation’s 2026 Circle of Champions Dinner", sum:"The night celebrated David Greenberg, chairman and former chief executive officer of L’Oréal USA, as he was inducted into the circle.", srcDate:"Oct 21", url:"https://wwd.com/beauty-industry-news/fragrance/fragrance-foundation-2026-circle-champions-david-greenberg-1239378688/"},
+  {date:"2026-10-21", outlet:"WWD", head:"Puig Q3 Sales Rise 7.2 Percent", sum:"All regions, and the group’s fragrance and makeup businesses, contributed to the gains.", srcDate:"Oct 21", url:"https://wwd.com/beauty-industry-news/beauty-features/puig-q3-sales-rise-7-2-percent-fragrance-makeup-all-regions-1239378422/"},
+  {date:"2026-10-21", outlet:"WWD", head:"Dossier Leans Into Originals With Oud-Focused Launch to Propel Next Growth Phase", sum:"Available now, the Oud collection comprises three scents: Tropical Oud, Oud de Rose and Golden Amber Oud.", srcDate:"Oct 21", url:"https://wwd.com/beauty-industry-news/fragrance/dossier-oud-collection-launch-strategy-1239350685/"},
+  {date:"2026-10-21", outlet:"WWD", head:"Vintage Coach Bags, Worn in Glam, Prada Skirts, Korean Beauty and More Set to Influence 2027", sum:"Whatnot's latest consumer trends report looks ahead to the next year and what's influencing consumers within fashion, accessories and beauty categories.", srcDate:"Oct 21", url:"https://wwd.com/fashion-news/fashion-trends/2027-fashion-beauty-trends-vintage-y2k-k-beauty-glam-1239377667/"},
+  {date:"2026-10-21", outlet:"WWD", head:"Interparfums SA Stock Surges Following Strong Q3", sum:"The French beauty maker saw a solid return to growth in Asia, driven by China, and revised upward its full-year sales expectations.", srcDate:"Oct 21", url:"https://wwd.com/beauty-industry-news/fragrance/interparfums-sa-stock-surges-following-strong-q3-asia-1239378337/"},
+  {date:"2026-10-21", outlet:"Beauty Independent", head:"Beauty’s Next Billion-Dollar Businesses Aren’t Just Beauty Brands", sum:"If you’re hunting for beauty unicorns, don’t just look at traditional skincare, makeup and haircare brands. Look at the companies booking appointments for beauty services. Earlier this year, Fresha and Genius AI, formerly GlossGenius, both reached unicorn status, with Fresha raising $80 million from KKR’s growth equity arm at a valuation exceeding ... The post Beauty’s Next Billion-Dollar Business", srcDate:"Oct 21", url:"https://www.beautyindependent.com/beauty-next-billion-dollar-businesses-booking-platforms/"},
+  {date:"2026-10-21", outlet:"Beauty Independent", head:"Men Are Finally Swapping Skincare Tips. Atwater Is Reaping The Rewards.", sum:"At an Atwater pop-up at Field + Supply, a makers market held Oct. 9-11 at Hutton Brickyards in Kingston, N.Y., Chris Salgardo witnessed something he hadn’t seen in more than three decades of selling products to men: A group of male strangers were swapping skincare advice. One swore by a moisturizer. Another explained ... The post Men Are Finally Swapping Skincare Tips. Atwater Is Reaping The Rewar", srcDate:"Oct 21", url:"https://www.beautyindependent.com/men-skincare-tips-atwater/"},
+  {date:"2026-10-21", outlet:"Beauty Independent", head:"“OK To Be A Kid”: WNBA Star Dearica Hamby Launches Tween Beauty Brand AMNO With 9-Year-Old Daughter Amaya Marie", sum:"On Saturday, Oct. 10, with the Los Angeles Sparks failing to qualify for the WNBA playoffs, the muscular men who usually dominate Venice Beach faced unexpected competition from Sparks star Dearica Hamby and her 9-year-old daughter, Amaya Marie. Flitting across a sandy volleyball court along with 150 supporters, including Hamby’s teammates from the Sparks, ... The post “OK To Be A Kid”: WNBA Star D", srcDate:"Oct 21", url:"https://www.beautyindependent.com/wnba-star-dearica-hamby-launches-tween-beauty-brand-amno-9-year-old-daughter-amaya-marie/"},
+  {date:"2026-10-21", outlet:"Beauty Independent", head:"Steamcream, Everist, Lasai And More Rank Among Content Creators’ Favorite BITE Finds", sum:"Of the hundreds of attendees at last month’s BITE trade show at New York City’s Metropolitan Pavilion, nearly 70 were content creators, including Substack writers, podcasters and social media influencers, who walked the floor to discover what’s next in beauty and wellness from more than 60 global brands. A ... The post Steamcream, Everist, Lasai And More Rank Among Content Creators’ Favorite BITE ", srcDate:"Oct 21", url:"https://www.beautyindependent.com/steamcream-everist-lasai-content-creators-favorite-bite-finds/"},
+  {date:"2026-10-21", outlet:"Beauty Independent", head:"Allies Of Skin Names CEO As Founder Nicolas Travis Prepares To Exit", sum:"Alicia Valencia has been named CEO of Allies of Skin, two months after the former global president of Makeup by Mario joined the skincare brand as interim president. In a LinkedIn post announcing her appointment, Valencia explained that she initially expected her interim president role to be temporary, but became convinced of ... The post Allies Of Skin Names CEO As Founder Nicolas Travis Prepares", srcDate:"Oct 21", url:"https://www.beautyindependent.com/allies-of-skin-names-ceo-founder-nicolas-travis-prepares-exit/"},
+  {date:"2026-10-20", outlet:"WWD", head:"EXCLUSIVE: Christina Nadin Takes Us Behind the Scenes of Her Victoria’s Secret Runway Debut", sum:"The Filipino-Irish-British model shares her fitness and beauty prep, along with backstage moments.", srcDate:"Oct 20", url:"https://wwd.com/eye/people/christina-nadin-victorias-secret-2026-backstage-beauty-prep-1239377704/"},
+  {date:"2026-10-20", outlet:"WWD", head:"How Rosie Huntington-Whiteley, Demi Moore and Adriana Lima Prepped Their Skin for the Spotlight", sum:"From high-tech sculpting devices to 24-karat gold masks, celebrity facialists Mimi Luzon, Keren Bartov and Shani Darden share the treatments behind Hollywood’s biggest stars at the Academy Museum Gala and Victoria’s Secret Fashion Show.", srcDate:"Oct 20", url:"https://wwd.com/beauty-industry-news/beauty-features/rosie-huntington-whiteley-demi-moore-adriana-lima-skin-prep-1239377247/"},
+  {date:"2026-10-20", outlet:"WWD", head:"Beauty M&#038;A Is Up in Volume but Down in Value: Report", sum:"A new study from Kearney shows that while beauty deal activity accelerated in 2025, the median deal value declined versus the year prior.", srcDate:"Oct 20", url:"https://wwd.com/beauty-industry-news/beauty-features/beauty-ma-volume-kearney-report-growth-1239376648/"},
+  {date:"2026-10-20", outlet:"WWD", head:"Capsum Gets a New Owner", sum:"Chanel has sold its majority stake in the CDMO to Motion Equity Partners, while the founding CEO and management team retain a minority share.", srcDate:"Oct 20", url:"https://wwd.com/beauty-industry-news/beauty-features/capsum-gets-new-owner-motion-equity-partners-1239376117/"},
+  {date:"2026-10-20", outlet:"WWD", head:"10 Buzzy Supplement Ingredients Fueling the Brain Health Boom", sum:"Data from Spate and NIQ’s latest report shows which ingredients consumers are searching for and engaging with most on social media when it comes to brain health.", srcDate:"Oct 20", url:"https://wwd.com/beauty-industry-news/wellness/supplement-growth-brain-health-creatine-omega-3-1239319983/"},
+  {date:"2026-10-20", outlet:"WWD", head:"Are Extraits de Parfum the New Growth Engine for Fragrances?", sum:"Since the pandemic, consumer demand for these types of fragrances has been growing rapidly.", srcDate:"Oct 20", url:"https://wwd.com/beauty-industry-news/fragrance/extraits-de-parfum-new-growth-engine-fragrances-1239351279/"},
+  {date:"2026-10-20", outlet:"WWD", head:"Very Great Enters Beauty With Haeze, a New Fragrance Brand", sum:"Codeveloped with Target and launching exclusively at the retailer Nov. 1, Haeze debuts with five layerable scents.", srcDate:"Oct 20", url:"https://wwd.com/beauty-industry-news/fragrance/very-great-haeze-fragrance-brand-target-launch-1239374602/"},
+  {date:"2026-10-20", outlet:"WWD", head:"EXCLUSIVE: L’Artisan Parfumeur Creates the First Fragrance Talent Show, ‘Le Nez’", sum:"It will go live starting in December on France’s TF1+.", srcDate:"Oct 20", url:"https://wwd.com/beauty-industry-news/fragrance/lartisan-parfumeur-creates-first-fragrance-talent-show-1239374268/"},
+  {date:"2026-10-20", outlet:"WWD", head:"The Gourmand Scents Dominating Amazon This Season", sum:"Sol de Janeiro is leading the category, with four of its hero Cheirosa hair and body mists ranking in the top 10, according to sales data from the last 30 days by Market Defense.", srcDate:"Oct 20", url:"https://wwd.com/beauty-industry-news/fragrance/top-gourmand-scents-fall-amazon-1239347796/"},
+  {date:"2026-10-20", outlet:"WWD", head:"Hinok’s Unique Approach to K-beauty", sum:"The lifestyle brand, founded in 2020, has taken a unique approach to expanding its global footprint.", srcDate:"Oct 20", url:"https://wwd.com/beauty-industry-news/beauty-features/hinok-korean-brand-us-expansion-plan-1239351874/"},
+  {date:"2026-10-20", outlet:"Beauty Independent", head:"Former The Body Shop CEO Charles Denton Wants To Turn Bodycare Into The Ultimate Retailtainment Destination", sum:"Charles Denton, former CEO of The Body Shop, is putting his turnaround expertise to work again by resurrecting the British discount beauty chain Bodycare with an ambitious expansion plan and a radically different business model. Once known for selling everyday health and beauty essentials at rock-bottom prices, Bodycare ... The post Former The Body Shop CEO Charles Denton Wants To Turn Bodycare In", srcDate:"Oct 20", url:"https://www.beautyindependent.com/former-the-body-shop-ceo-charles-denton-bodycare-ultimate-retailtainment-destination/"},
+  {date:"2026-10-20", outlet:"Beauty Independent", head:"With Dose Of Derm, Sheila Farhang Launches A Rare Dermatologist-Founded Makeup Brand", sum:"At Avant Dermatology &#38; Aesthetics, dermatologist Sheila Farhang sees patients every day dealing with skin conditions ranging from rosacea and acne to melasma, a condition she experienced herself after giving birth 17 months ago. For many of these patients, tinted sunscreens don’t provide enough coverage to conceal their skin concerns. They constantly ask ... The post With Dose Of Derm, Sheila ", srcDate:"Oct 20", url:"https://www.beautyindependent.com/dose-of-derm-sheila-farhang-launches-dermatologist-founded-makeup-brand/"},
+  {date:"2026-10-19", outlet:"WWD", head:"Kylie Jenner Gets a $50 Million Fantasy Bra on Her First Victoria’s Secret Walk After Angels Waited Years", sum:"The beauty mogul debuted the record-breaking Jacob &#38; Co. design on Sunday, joining the likes of Gisele Bündchen, Adriana Lima and Elsa Hosk.", srcDate:"Oct 19", url:"https://wwd.com/pop-culture/culture-news/kylie-jenner-50-million-victorias-secret-fantasy-bra-1239375779/"},
+  {date:"2026-10-19", outlet:"WWD", head:"Breaking Down the Best Angel Beauty at Victoria’s Secret Fashion Show 2026", sum:"From Kylie Jenner's fantasy debut to Megan Thee Stallion's bombshell blond.", srcDate:"Oct 19", url:"https://wwd.com/pop-culture/celebrity-news/victorias-secret-fashion-show-2026-beauty-moments-1239373365/"},
+  {date:"2026-10-19", outlet:"WWD", head:"Troye Sivan’s Tsu Lange Yor Is Popping Up in New York", sum:"The Australian fragrance and lifestyle brand, which just tapped Andy Chiu as CEO, is gearing up for a next leg of growth in the U.S. market.", srcDate:"Oct 19", url:"https://wwd.com/beauty-industry-news/fragrance/troye-sivan-fragrance-pop-up-new-york-1239352515/"},
+  {date:"2026-10-19", outlet:"Beauty Independent", head:"The $15M Series A Wager That Mikayla Nogueira’s POV Beauty Can Turn TikTok Fame Into A Lasting Brand", sum:"Some of beauty’s most prominent investors are putting $15 million behind the prospect of turning TikTok fame into long-term beauty business success. POV Beauty, the skin-prep brand co-founded by Mikayla Nogueira, who has around 21 million followers across TikTok and Instagram, and beauty industry veteran Ani Hadjinian, formerly GM of ... The post The $15M Series A Wager That Mikayla Nogueira’s POV", srcDate:"Oct 19", url:"https://www.beautyindependent.com/15m-series-mikayla-nogueira-pov-beauty-tiktok-lasting-brand/"},
+  {date:"2026-10-19", outlet:"Beauty Independent", head:"Christina Aguilera Goes Live For Playground’s TikTok Shop Debut In Sexual Wellness Milestone", sum:"Although social media platforms haven’t always been friendly to sexual wellness brands, Playground is being welcomed by TikTok Shop, where the intimate care brand is launching its storefront today and marking the occasion with a livestream hosted by Christina Aguilera. Starting at 9 p.m. ET, the hourlong ... The post Christina Aguilera Goes Live For Playground’s TikTok Shop Debut In Sexual Wellnes", srcDate:"Oct 19", url:"https://www.beautyindependent.com/christina-aguilera-goes-live-playground-tiktok-shop-debut-sexual-wellness-milestone/"},
+  {date:"2026-10-19", outlet:"Beauty Independent", head:"Patrick Ta Beauty Sues CVS, Distributor Over Unauthorized Product Sales", sum:"Patrick Ta Beauty is suing CVS and distributor Akstrom Imports over what it alleges are unauthorized sales of its products at the drugstore chain, claiming trademark infringement and unfair competition. Filed Oct. 14 in the United States District Court for the Southern District of California, ... The post Patrick Ta Beauty Sues CVS, Distributor Over Unauthorized Product Sales appeared first on Bea", srcDate:"Oct 19", url:"https://www.beautyindependent.com/patrick-ta-beauty-sues-cvs-distributor-unauthorized-product-sales/"},
+  {date:"2026-10-16", outlet:"WWD", head:"Substance of Light, a UV Skin Care Brand, Wins the First Sephora Prize for Emerging European Brands", sum:"“I think newcomers need help in understanding how to scale properly, and at the right pace, and we want to support them,” said Catherine Spindler, Sephora Europe and Middle East president, of the retailer's new prize for emerging European beauty brands.", srcDate:"Oct 16", url:"https://wwd.com/beauty-industry-news/beauty-features/substance-of-light-uv-skincare-wins-first-sephora-prize-1239364157/"},
+  {date:"2026-10-16", outlet:"WWD", head:"The Best Suede Bags for Upgrading Your Fall Wardrobe This Year", sum:"From color-blocked beauties to slouchy totes, these are the handbags that are defining autumnal style trends in 2026.", srcDate:"Oct 16", url:"https://wwd.com/shop/shop-fashion/best-suede-bags-1238083203/"},
+  {date:"2026-10-16", outlet:"WWD", head:"Teen Beauty Spend Is Up, as Is Rhode’s Stock, Piper Sandler Survey Shows", sum:"The brand — led by Hailey Bieber and backed by E.l.f. Beauty — entered Piper Sandler’s annual Teen Survey for the first time this year, as skin care and cosmetics spend rose 5 percent.", srcDate:"Oct 16", url:"https://wwd.com/beauty-industry-news/beauty-features/piper-sandler-survey-beauty-findings-1239351894/"},
+  {date:"2026-10-16", outlet:"WWD", head:"Jennifer Lawrence Teases Biodesign-Driven Hair Care Brand Mes°", sum:"The Oscar-winning actress just posted a link to the brand on Instagram.", srcDate:"Oct 16", url:"https://wwd.com/beauty-industry-news/beauty-features/jennifer-lawrence-biotech-hair-care-brand-mes-1239363904/"},
+  {date:"2026-10-16", outlet:"Beauty Independent", head:"Jen Atkin’s Former Assistant Wants To Take The Intimidation Out Of Hair Extensions", sum:"For nearly two decades, Alex Brown, celebrity hairstylist, salon owner and founder of the new hair extension brand Ruti Ruti, has heard the same complaints about hair extensions: unmanageable cuts, heavy clip-ins, visible tracks and confusing application. Those frustrations were particularly acute among clients experiencing thinning hair and density loss, including women navigating ... The post Je", srcDate:"Oct 16", url:"https://www.beautyindependent.com/jen-atkin-former-assistant-wants-take-intimidation-out-hair-extensions-ruti-ruti/"},
+  {date:"2026-10-16", outlet:"Beauty Independent", head:"Is It Time For Yes-Makeup Makeup? Mary Phillips And Patrick Ta Predict What’s Next", sum:"From metallic eyeliner at Dior to colorful smoky eyes at Gucci, the spring 2027 runways signaled a return to more expressive makeup, particularly around the eyes. Mary Phillips and Patrick Ta expect that appetite for boldness to extend beyond the runways next year, paired with fresh, natural-looking skin. The celebrity makeup artists ... The post Is It Time For Yes-Makeup Makeup? Mary Phillips And", srcDate:"Oct 16", url:"https://www.beautyindependent.com/makeup-mary-phillips-patrick-ta-predict-whats-next/"},
+  {date:"2026-10-15", outlet:"WWD", head:"EXCLUSIVE: Bespoke Fashion Buys Nick Graham Brand", sum:"The luxury brand founded by Danielle Mandelbaum Anderman has plans to revitalize and grow the label.", srcDate:"Oct 15", url:"https://wwd.com/menswear-news/mens-clothing-furnishings/bespoke-fashion-nick-graham-danielle-mandelbaum-1239351858/"},
+  {date:"2026-10-15", outlet:"WWD", head:"EXCLUSIVE: Parfums Christian Dior Unveils Renovated 33 Avenue Hoche Headquarters", sum:"The location houses creation, training and heritage for the first time.", srcDate:"Oct 15", url:"https://wwd.com/beauty-industry-news/beauty-features/parfums-christian-dior-unveils-renovated-33-avenue-hoche-hq-1239351869/"},
+  {date:"2026-10-15", outlet:"WWD", head:"Barefaced Expands Into Prescription Medical Skin Care With Barefaced Rx Launch", sum:"The new platform offers clinician-guided prescription treatments tailored to address a wide range of skin concerns.", srcDate:"Oct 15", url:"https://wwd.com/beauty-industry-news/skin-care/barefaced-expands-medical-skin-care-rx-launch-1239346491/"},
+  {date:"2026-10-15", outlet:"WWD", head:"Glow Recipe Launches Buldak-Inspired Lip Balms", sum:"The skin care brand has imagined two limited-edition iterations of its Glass Balms in partnership with the viral Korean spicy noodle brand.", srcDate:"Oct 15", url:"https://wwd.com/beauty-industry-news/beauty-features/glow-recipe-buldak-lip-balm-1239347007/"},
+  {date:"2026-10-15", outlet:"WWD", head:"Meet Zaiie, a Makeup Veteran’s Vision for Palestinian-rooted Beauty", sum:"Founded by The Estée Lauder Cos. alum Reema Shihadeh, Zaiie looks to infuse high-performance products with hallmarks of Palestinian culture for a global audience.", srcDate:"Oct 15", url:"https://wwd.com/beauty-industry-news/color-cosmetics/zaiie-palestinian-beauty-brand-makeup-1239347672/"},
+  {date:"2026-10-15", outlet:"Beauty Independent", head:"Founder Andrea Lisbona Steps Down As Touchland CEO", sum:"Andrea Lisbona has stepped down as CEO of Touchland, the mold-breaking hand sanitizer brand she launched in the United States in 2017 and sold to Church &#38; Dwight in 2025 in a deal valued at up to $880 million. Lisbona will remain involved with Touchland following the transition, taking on the role ... The post Founder Andrea Lisbona Steps Down As Touchland CEO appeared first on Beauty Independ", srcDate:"Oct 15", url:"https://www.beautyindependent.com/founder-andrea-lisbona-steps-down-touchland-ceo/"},
+  {date:"2026-10-15", outlet:"Beauty Independent", head:"Gauge Capital Acquires Saltyface, Its Third Sunless Tanning Brand", sum:"Gauge Capital has acquired Saltyface, a premium, clean sunless tanning brand whose skincare-forward formulations fit snugly into the skinification of the sunless tanning category. The acquisition is the middle-market private equity firm’s third sunless tanning deal in a little over three years ... The post Gauge Capital Acquires Saltyface, Its Third Sunless Tanning Brand appeared first on Beauty I", srcDate:"Oct 15", url:"https://www.beautyindependent.com/gauge-capital-acquires-premium-sunless-tanning-brand-saltyface/"},
+  {date:"2026-10-14", outlet:"WWD", head:"Douglas Group Names New CEO", sum:"Jean-Marc Bellaiche will succeed Sander van der Laan, who is retiring, on Nov. 1.", srcDate:"Oct 14", url:"https://wwd.com/beauty-industry-news/beauty-features/douglas-group-names-new-ceo-jean-marc-bellaiche-1239347253/"},
+  {date:"2026-10-14", outlet:"WWD", head:"Silver Mirror Launches GLP-1 Volmira Facial to Address Skin Concerns Amid Weight Loss", sum:"The seven-step treatment is designed to combat skin laxity and dullness associated with rapid weight loss, offering a noninvasive solution for GLP-1 medication users.", srcDate:"Oct 14", url:"https://wwd.com/beauty-industry-news/skin-care/silver-mirror-glp1-volmira-facial-skin-concerns-weight-loss-1239346059/"},
+  {date:"2026-10-14", outlet:"WWD", head:"Galderma to Acquire ZO Skin Health for $1.5 Billion", sum:"The move positions Galderma deeper into the dermatological skin care category.", srcDate:"Oct 14", url:"https://wwd.com/beauty-industry-news/skin-care/galderma-acquire-zo-skin-health-for-1-5-billion-1239346256/"},
+  {date:"2026-10-14", outlet:"WWD", head:"EXCLUSIVE: Ipsy Wants In on Wellness", sum:"The beauty box subscription service is introducing a curated wellness offering for the first time featuring a slate of supplement brands.", srcDate:"Oct 14", url:"https://wwd.com/beauty-industry-news/wellness/ipsy-wellness-supplements-cymbiotika-lemme-1239345711/"},
+  {date:"2026-10-14", outlet:"Beauty Independent", head:"Galderma Bolsters Its Skincare-To-Syringes Portfolio With $1.5B Deal For ZO Skin Health", sum:"Galderma has agreed to acquire ZO Skin Health in a $1.5 billion deal that brings together two of the five leading professional skincare brands in the United States, diversifies the dermatology giant’s business amid softness in the facial fillers market and strengthens its position at the intersection of ... The post Galderma Bolsters Its Skincare-To-Syringes Portfolio With $1.5B Deal For ZO Skin H", srcDate:"Oct 14", url:"https://www.beautyindependent.com/galderma-bolsters-skincare-portfolio-1-5b-deal-zo-skin-health/"},
+  {date:"2026-10-14", outlet:"Beauty Independent", head:"TikTok Shop’s Beauty GM Forecasts Bigger Holiday Sales, More Brand Livestreams", sum:"Ajay Salpekar, GM of beauty, food and beverage at TikTok Shop, expects beauty sales on the social commerce platform to significantly surpass last year’s holiday season, when e-commerce intelligence firm Charm.io estimated that sales for the category peaked at $392.8 million in November. The optimistic outlook comes ... The post TikTok Shop’s Beauty GM Forecasts Bigger Holiday Sales, More Brand Liv", srcDate:"Oct 14", url:"https://www.beautyindependent.com/tiktok-shop-beauty-gm-forecasts-bigger-holiday-sales-more-brand-livestreams/"},
+  {date:"2026-10-14", outlet:"Beauty Independent", head:"Megababe’s Katie Sturino Didn’t Call Out Lancôme Over Its “I’m Fine” Campaign. She Called It In.", sum:"When Megababe founder Katie Sturino spotted Lancôme’s star-studded new “I’m Fine” initiative addressing women’s mental health, she could’ve been very not fine and called out the L’Oréal-owned beauty powerhouse for launching a campaign similar to one her bootstrapped brand introduced in May. Instead, she called Lancôme in. In an Instagram post ... The post Megababe’s Katie Sturino Didn’t Call Out L", srcDate:"Oct 14", url:"https://www.beautyindependent.com/megababe-katie-sturino-lancome-im-fine-campaign-she-called-it-in/"},
+  {date:"2026-10-13", outlet:"WWD", head:"Gauge Capital Acquires Self-Tanning Brand Saltyface", sum:"Private equity firm Gauge Capital plans to expand Vancouver-based Saltyface’s reach and product offerings.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/skin-care/gauge-capital-acquires-self-tanning-saltyface-1239345228/"},
+  {date:"2026-10-13", outlet:"WWD", head:"DSM-Firmenich Unveils Flagship Fine Fragrance Hub in Chelsea", sum:"Located in the Chelsea neighborhood, the 44,000-square-foot flagship space brings together perfumers, fragrance development teams and cutting-edge technology.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/beauty-features/dsm-firmenich-flagship-fine-fragrance-hub-chelsea-1239344838/"},
+  {date:"2026-10-13", outlet:"WWD", head:"Givaudan Stock Surges, Symrise Opens Scent Center in Singapore", sum:"Beauty’s key fragrance category continues to flex.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/fragrance/givaudan-q3-2026-symrise-scent-center-singapore-1239344586/"},
+  {date:"2026-10-13", outlet:"WWD", head:"Bluemercury Refreshes Lune+Aster", sum:"Bluemercury’s proprietary makeup brand Lune+Aster unveils new multitasking products and a fresh “Beauty, Uncomplicated” approach, marking the start of its broader evolution through 2027.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/color-cosmetics/luneaster-relaunches-bluemercury-1239336244/"},
+  {date:"2026-10-13", outlet:"WWD", head:"Sean Harrington Joins Lempriere Wells as Partner", sum:"The former Elemis cofounder joins Lempriere Wells — now rebranded as Lempriere Wells Harrington — to advise beauty and wellness brands in the U.S. and globally.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/beauty-features/sean-harrington-joins-lempriere-wells-partner-1239320278/"},
+  {date:"2026-10-13", outlet:"WWD", head:"How Beauty Brands Can Ride the Live Shopping Wave", sum:"Live selling, once a boon for beauty sales in the '90s and 2000s, is back via TikTok Shop. But what does a winning formula look like for brands on the platform?", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/beauty-features/beauty-live-shopping-tiktok-tarte-dr-groot-1239335306/"},
+  {date:"2026-10-13", outlet:"WWD", head:"Thomas Saujet’s Luxe Fragrance Debut: Lalique Bottles, 60 Percent Concentrations, and a Dash of Mediterranean Glamour", sum:"Saujet, the haute parfumerie fragrance house, will launch on Oct. 20 with a pop-up in Neiman Marcus Beverly Hills.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/fragrance/thomas-saujet-luxe-fragrance-lalique-1239333882/"},
+  {date:"2026-10-13", outlet:"WWD", head:"The Breast Cancer Awareness Initiatives Beauty Brands Are Running This Month", sum:"From La Bonne Brosse to Lys Beauty and beyond, several brands are running promotions in October to support breast cancer research and treatment.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/beauty-features/beauty-brands-breast-cancer-awareness-donation-1239319696/"},
+  {date:"2026-10-13", outlet:"WWD", head:"Unconventional Beauty From Spring 2027 Paris Runways", sum:"Hair and makeup at shows such as Yohji Yamamoto, Mugler and Rick Owens rocked otherworldly glam.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/beauty-features/unconventional-beauty-spring-2027-paris-runways-1239336187/"},
+  {date:"2026-10-13", outlet:"WWD", head:"Aurelian Lis to Depart Dermalogica", sum:"The chief executive officer, who joined the brand a decade ago, is stepping down in late December.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/skin-care/aurelian-lis-depart-dermalogica-1239346021/"},
+  {date:"2026-10-13", outlet:"WWD", head:"John Demsey Parts Ways With Gap Inc. Amid Beauty Category Revamp", sum:"The departure comes as Gap Inc. refines its beauty and accessories strategy amid a competitive backdrop.", srcDate:"Oct 13", url:"https://wwd.com/beauty-industry-news/beauty-features/john-demsey-parts-ways-gap-inc-beauty-1239345461/"},
+  {date:"2026-10-13", outlet:"Beauty Independent", head:"From Corporate CEO To Bootstrapped Founder: Sima Sistani Relishes Business Freedom With Liberation Of Flowers", sum:"On March 20, 2024, Katie Sturino, the body acceptance advocate and founder of Megababe, took to Instagram to call out Sima Sistani, then CEO of WW, formerly WeightWatchers, for coming close to, but stopping short of, apologizing for the company’s history of attributing weight loss to willpower and elevating certain body ... The post From Corporate CEO To Bootstrapped Founder: Sima Sistani Relishes", srcDate:"Oct 13", url:"https://www.beautyindependent.com/corporate-ceo-bootstrapped-founder-sima-sistani-liberation-of-flowers/"},
+  {date:"2026-09-01", outlet:"BeautyMatter", head:"Trump's Tariff War with Canada Is Coming for Beauty … Again", sum:"New 50% US tariffs on Canadian goods threaten the beauty industry's integrated North American supply chain, from ingredients to packaging, forcing large corporations and small indie brands alike to choose between absorbing costs, raising prices, or exiting the US market.", srcDate:"Sep 1", url:"https://beautymatter.com/articles/trumps-tariff-war-with-canada-is-coming-for-beauty-again"},
+  {date:"2026-09-01", outlet:"BeautyMatter", head:"Beauty and the Machine: Dyson Pivots to Oral Care With CameraJet", sum:"Dyson entered oral care with its $499 CameraJet toothbrush, which uses a built-in camera and AI-guided tracking to target gaps between teeth, extending its engineering-led premium positioning beyond haircare.", srcDate:"Sep 1", url:"https://beautymatter.com/articles/dyson-takes-on-oral-care-with-cameraJet"},
+  {date:"2026-08-30", outlet:"Beauty Independent", head:"Scent Beauty Rides Nostalgia And Americana With Ambitious Stetson Gen Z Fragrance Push", sum:"Scent Beauty is launching the Stetson Untamed fragrance collection targeting Gen Z men, backing the line with $5 million in 2026 marketing spend (rising to ~$10 million in 2027) across 5,000+ retail doors.", srcDate:"Aug 30", url:"https://www.beautyindependent.com/scent-beauty-rides-nostalgia-americana-ambitious-stetson-gen-z-fragrance-push/"},
+  {date:"2026-08-28", outlet:"WWD", head:"Cottonball Looks to Blends Prescription Efficacy With Luxury in New Skin Care Line", sum:"The brand’s six-product lineup combines dermatologist-developed, prescription-strength actives with luxury textures and a personalized approach to skin care.", srcDate:"Aug 28", url:"https://wwd.com/beauty-industry-news/skin-care/cottonball-prescription-efficacy-luxury-skin-care-line-1239168346/"},
+  {date:"2026-08-28", outlet:"WWD", head:"EXCLUSIVE: Fara Homidi Dips Into Mascara", sum:"In a conversation with WWD, the eponymous founder talks category play and slowing the pace of innovation.", srcDate:"Aug 28", url:"https://wwd.com/beauty-industry-news/color-cosmetics/fara-homidi-mascara-launch-1239170426/"},
+  {date:"2026-08-28", outlet:"BeautyMatter", head:"Indian Skincare Brand Asaya Raises $9.2 Million", sum:"The Bengaluru-based startup raised a Series A funding round.", srcDate:"Aug 28", url:"https://beautymatter.com/articles/indian-skincare-brand-asaya-raises-9-2-million"},
+  {date:"2026-08-28", outlet:"Beauty Independent", head:"Fewer Than 5% Of Sephora Brands Are Self-Funded. Here’s How Maed Is Doing It", sum:"“Onboarding Sephora is like an Olympic sport,” jokes Maed founder Denise Vasi, the actress, model and content creator turned beauty entrepreneur. “You’re jumping in, and you’re learning.” A year into Maed’s run at the beauty specialty retailer, that entrepreneurial athleticism appears to be paying off. The self-funded lip brand, which launched on Sephora.com ... The post Fewer Than 5% Of Sephora B", srcDate:"Aug 28", url:"https://www.beautyindependent.com/sephora-brands-self-funded-how-maed-doing-it/"},
+  {date:"2026-08-28", outlet:"Beauty Independent", head:"An Anal Douche At Your Local CVS? Future Method Is Taking Butt Care Mainstream", sum:"Even as Americans have become less permissive about sex in recent years, anal sex products are going mainstream and rolling out to your local drugstore. Future Method, the sexual wellness brand created by anal surgeon Evan Goldstein, owner of Manhattan medical practice Bespoke Surgical, is ... The post An Anal Douche At Your Local CVS? Future Method Is Taking Butt Care Mainstream appeared first on", srcDate:"Aug 28", url:"https://www.beautyindependent.com/anal-douche-cvs-future-method-taking-butt-care-mainstream/"},
+  {date:"2026-08-27", outlet:"WWD", head:"Ulta Beauty Beats Wall Street Expectations, Raises Full-year Forecasts Amid Strong Q2 Performance", sum:"Bolstered by an 8.9 percent sales increase, international expansion and new initiatives, the beauty retailer raised its outlook for continued growth.", srcDate:"Aug 27", url:"https://wwd.com/beauty-industry-news/beauty-features/ulta-beauty-beats-wall-street-expectations-raises-forecasts-1239172914/"},
+  {date:"2026-08-27", outlet:"WWD", head:"Estée Lauder Names Kathleen Mitchell Head of New Hair Care Hub Based in London", sum:"Mitchell will report to Shane Wolf, global brand president, Aveda and hair care brands. She will sit on Lauder's global hair care leadership team and the U.K. and Ireland executive leadership team.", srcDate:"Aug 27", url:"https://wwd.com/beauty-industry-news/hair/estee-lauder-kathleen-mitchell-head-new-global-haircare-hub-1239166487/"},
+  {date:"2026-08-27", outlet:"WWD", head:"Former WeightWatchers CEO Sima Sistani Debuts Fragrance Brand Liberation of Flowers", sum:"The collection of scents is inspired by Sistani’s Persian roots.", srcDate:"Aug 27", url:"https://wwd.com/beauty-industry-news/fragrance/sima-sistani-liberation-of-flowers-debut-1239165028/"},
+  {date:"2026-08-27", outlet:"WWD", head:"To Stand Out in a Crowded Skin Care Market, Tatcha Returns to Its Roots", sum:"Under new CEO Diane Kim, the Japanese skin care brand is undergoing a “refinement,” adding three new ambassadors — Naomi Osaka among them — and leaning deeper into science-based messaging.", srcDate:"Aug 27", url:"https://wwd.com/beauty-industry-news/skin-care/tatcha-new-direction-naomi-osaka-skin-care-1239164938/"},
+  {date:"2026-08-27", outlet:"WWD", head:"Julien Farel Returns to U.S. Open, Celebrating 18 Years of Styling Tennis Stars", sum:"From Coco Gauff to Novak Djokovic to Rafael Nadal, Julien Farel and his team bring luxury grooming to the U.S. Open, marking nearly two decades of keeping tennis icons camera-ready.", srcDate:"Aug 27", url:"https://wwd.com/beauty-industry-news/hair/julien-farel-us-open-18-years-styling-tennis-stars-1239164626/"},
+  {date:"2026-08-27", outlet:"BeautyMatter", head:"Target Beauty Studio: Prestige Hits the Bullseye", sum:"Target Beauty Studio launches with 1,600 products from 90 prestige and emerging brands across 600+ stores, part of a push to blur the line between mass and specialty beauty retail.", srcDate:"Aug 27", url:"https://beautymatter.com/articles/target-beauty-studio-prestige-hits-the-bullseye"},
+  {date:"2026-08-27", outlet:"BeautyMatter", head:"Beauty Ad Intelligence 2026: What Made a Beauty Ad Last in H1 2026", sum:"New research reveals why creative, proof, and localization—not audience targeting—are becoming the keys to high-performing beauty ads in the age of Meta AI.", srcDate:"Aug 27", url:"https://beautymatter.com/articles/what-beautys-best-ads-reveal"},
+  {date:"2026-08-27", outlet:"BeautyMatter", head:"2026 Week 35: Beauty Brand and Product Launches", sum:"Featuring news from Ciele, Rizos Curls, and iNNBEAUTY, here’s what caught our editorial team’s attention this week.", srcDate:"Aug 27", url:"https://beautymatter.com/articles/2026-week-35-beauty-brand-and-product-launches"},
+  {date:"2026-08-27", outlet:"BeautyMatter", head:"Articles", sum:"Articles", srcDate:"Aug 27", url:"https://beautymatter.com/articles"},
+  {date:"2026-08-27", outlet:"BeautyMatter", head:"Inside Sungboon Editor’s SoHo Pop-Up", sum:"Inside Sungboon Editor’s SoHo Pop-Up", srcDate:"Aug 27", url:"https://beautymatter.com/articles/inside-sungboon-editors-soho-pop-up"},
+  {date:"2026-08-27", outlet:"BeautyMatter", head:"Mexican Startup SARELLY Raises $3 Million Bridge Round", sum:"Mexican Startup SARELLY Raises $3 Million Bridge Round", srcDate:"Aug 27", url:"https://beautymatter.com/articles/mexican-startup-sarelly-raises-3-million-bridge-round"},
+  {date:"2026-08-27", outlet:"BeautyMatter", head:"Shanghai Jahwa Exits Sephora China Joint Venture", sum:"Shanghai Jahwa Exits Sephora China Joint Venture", srcDate:"Aug 27", url:"https://beautymatter.com/articles/shanghai-jahwa-exits-sephora-china-joint-venture"},
+  {date:"2026-08-27", outlet:"BeautyMatter", head:"Dolly Parton’s Beauty Legacy: How Her Signature Glamour Became a Beauty Brand", sum:"Dolly Parton’s Beauty Legacy: How Her Signature Glamour Became a Beauty Brand", srcDate:"Aug 27", url:"https://beautymatter.com/articles/dolly-parton-dies-at-80"},
+  {date:"2026-08-26", outlet:"WWD", head:"EXCLUSIVE: Charlotte Tilbury Unveils Next Chapter of Airbrush Flawless With Jerry Hall, Grace Van Patten and More", sum:"Designed to blur, bake, brighten and build, the franchise has inaugurated two additions, the Airbrush Flawless Blur Loose Powder and the Airbrush Flawless Blush Blur.", srcDate:"Aug 26", url:"https://wwd.com/beauty-industry-news/color-cosmetics/charlotte-tilbury-airbrush-flawless-campaign-1239146519/"},
+  {date:"2026-08-26", outlet:"WWD", head:"Bath &#038; Body Works Topped Wall Street Sales Estimates in Q2, but Is Still Not Getting Enough Consumers Through Its Doors", sum:"Sales slipped by 2.3 percent in the second quarter, with digital sales returning to growth for the first time since 2021, while in-store sales declined.", srcDate:"Aug 26", url:"https://wwd.com/beauty-industry-news/beauty-features/bath-body-works-topped-wall-street-sales-estimates-q2-1239164496/"},
+  {date:"2026-08-26", outlet:"WWD", head:"PDC Brands Rebrands as Arthēa", sum:"Under the Arthēa name, the parent company of Dr Teal’s, Cantu, Bodycology and Sunryz is sharpening its focus on making wellness and personal care accessible to more people.", srcDate:"Aug 26", url:"https://wwd.com/beauty-industry-news/beauty-features/pdc-brands-rebrands-arthea-1239164065/"},
+  {date:"2026-08-26", outlet:"WWD", head:"The Artistry-led Makeup Brand Target Is Betting On Next", sum:"Kim Baker's Glamazon Beauty will bow at the retailer as part of Target's plan to make it in prestige beauty on its own.", srcDate:"Aug 26", url:"https://wwd.com/beauty-industry-news/color-cosmetics/target-celebrity-makeup-brand-kim-baker-glamazon-beauty-1239149214/"},
+  {date:"2026-08-26", outlet:"WWD", head:"Old Navy Rolls Out Beauty Offering Nationwide With Private Label Line and Third-party Brand Assortment", sum:"Old Navy rolls out its beauty concept to 1,000 stores and online, featuring Old Navy Beauty Co. line and third-party brand offerings.", srcDate:"Aug 26", url:"https://wwd.com/beauty-industry-news/beauty-features/old-navy-expands-beauty-offering-nationwide-1239149092/"},
+  {date:"2026-08-26", outlet:"BeautyMatter", head:"100 Days to Ulta Beauty: Soshe’s Launch Playbook", sum:"100 Days to Ulta Beauty: Soshe’s Launch Playbook", srcDate:"Aug 26", url:"https://beautymatter.com/articles/soshe-ulta-beauty-launch"},
+  {date:"2026-08-26", outlet:"BeautyMatter", head:"KKR Acquires Leading Japanese Beauty Platform Ci Flavors", sum:"KKR Acquires Leading Japanese Beauty Platform Ci Flavors", srcDate:"Aug 26", url:"https://beautymatter.com/articles/kkr-acquires-leading-japanese-beauty-platform-ci-flavors"},
+  {date:"2026-08-26", outlet:"BeautyMatter", head:"Regent to Acquire Avon North America from LG H&H", sum:"Regent to Acquire Avon North America from LG H&H", srcDate:"Aug 26", url:"https://beautymatter.com/articles/regent-to-acquire-avon-north-america-from-lg-hh"},
+  {date:"2026-08-26", outlet:"Beauty Independent", head:"Men Are Spritzing, Slathering And Sculpting. Talons Believes Press-On Nails Are Next.", sum:"Henry Lee, who invented Lee Press-On Nails in the 1980s, was a man, and like most products in the beauty industry invented by men, his were aimed squarely (or roundly, ovally, almondly or stiletto-pointedly) at women. The brand’s researchers even measured the nails of more than 1,000 women to determine their size and shape. ... The post Men Are Spritzing, Slathering And Sculpting. Talons Believes ", srcDate:"Aug 26", url:"https://www.beautyindependent.com/men-talons-press-on-nails/"},
+  {date:"2026-08-26", outlet:"Beauty Independent", head:"“A Country Girl’s Idea Of Glam”: Dolly Parton’s Real (And Fake) Beauty Legacy", sum:"The irony of Dolly Parton’s first charting hit, &#8220;Dumb Blonde,&#8221; is unmistakable. The lyrics she sang dripped with it—&#8221;Just because I’m blonde, don’t think I’m dumb / ‘Cause this dumb blonde ain’t nobody’s fool&#8221;—and her life, which ended Tuesday in Nashville at the age of 80 after a brief battle with cancer, was evidence ... The post “A Country Girl’s Idea Of Glam”: Dolly Par", srcDate:"Aug 26", url:"https://www.beautyindependent.com/dolly-parton-beauty-legacy/"},
+  {date:"2026-08-26", outlet:"Beauty Independent", head:"Target Is Taking Beauty Upmarket Without Ulta. Will Its Shoppers Follow?", sum:"Beauty Independent examines Target's new upscale in-store beauty concept, launched after winding down its Ulta partnership, and whether value-focused shoppers will trade up to prestige products.", srcDate:"Aug 26", url:"https://www.beautyindependent.com/target-beauty-upmarket-studio-mass-shoppers/"},
+  {date:"2026-08-25", outlet:"BeautyMatter", head:"Navigating the K-Shaped Consumer Landscape", sum:"Navigating the K-Shaped Consumer Landscape", srcDate:"Aug 25", url:"https://beautymatter.com/articles/the-k-shaped-economy-is-reshaping-beauty"},
+  {date:"2026-08-25", outlet:"BeautyMatter", head:"Why Global Fragrance Giants Are Investing Heavily in the Gulf Region", sum:"Why Global Fragrance Giants Are Investing Heavily in the Gulf Region", srcDate:"Aug 25", url:"https://beautymatter.com/articles/givaudan-fragrance-is-part-of-the-culture-in-the-gulf"},
+  {date:"2026-08-25", outlet:"BeautyMatter", head:"How Peach & Lily Helped Build K-Beauty’s US Success Story", sum:"How Peach & Lily Helped Build K-Beauty’s US Success Story", srcDate:"Aug 25", url:"https://beautymatter.com/articles/alicia-yoon-peach-and-lily-k-beauty"},
+  {date:"2026-08-25", outlet:"BeautyMatter", head:"How AI Is Reshaping Beauty Brand Discovery and Consumer Recommendations", sum:"How AI Is Reshaping Beauty Brand Discovery and Consumer Recommendations", srcDate:"Aug 25", url:"https://beautymatter.com/articles/the-beauty-brands-that-are-ruling-ai"},
+  {date:"2026-08-25", outlet:"BeautyMatter", head:"US Spa Industry Revenue Hits Record $23.5 Billion as Visits Rise", sum:"US Spa Industry Revenue Hits Record $23.5 Billion as Visits Rise", srcDate:"Aug 25", url:"https://beautymatter.com/articles/the-us-spa-industry-reaches-record-23-5-billion"},
+  {date:"2026-08-25", outlet:"BeautyMatter", head:"Beauty Retail Expansion: Sephora, Ulta, Walmart, and Costco Drive August Growth", sum:"Beauty Retail Expansion: Sephora, Ulta, Walmart, and Costco Drive August Growth", srcDate:"Aug 25", url:"https://beautymatter.com/articles/retail-watch-who-launched-where-in-july-2026"},
+  {date:"2026-08-25", outlet:"Beauty Independent", head:"TowerBrook Invests In Rael As Period Care Challenger Eyes Bigger Share Of The Market", sum:"TowerBrook Capital Partners made an investment (terms undisclosed) in Rael, a premium period-care brand founded in 2017, to help it scale across retail channels and geographies against legacy feminine-hygiene incumbents.", srcDate:"Aug 25", url:"https://www.beautyindependent.com/towerbrook-invests-rael-period-care-challenger/"},
+  {date:"2026-08-25", outlet:"Beauty Independent", head:"Curology Overhauls Agency With Skin Longevity Focus And Big Growth Ambitions", sum:"More than five years after Curology launched Agency as an anti-aging brand, it’s been overhauled under new leadership to bring it into the longevity age and dramatically scale the business. Agency has been a key early priority for Kathy Savitt, who became CEO of Curology in June last year after the company ... The post Curology Overhauls Agency With Skin Longevity Focus And Big Growth Ambitions ap", srcDate:"Aug 25", url:"https://www.beautyindependent.com/curology-overhauls-agency-skin-longevity-focus-big-growth-ambitions/"},
+  {date:"2026-08-25", outlet:"Beauty Independent", head:"Dr. Forhair Lands At Sephora As K-Beauty’s Haircare Wave Builds", sum:"Sephora’s Seoul searching for beauty hits continues. The beauty speciality retailer has launched bestselling South Korean scalp health brand Dr. Forhair into over 200 Sephora stores today with six products from its Folligen range, including its hero offering, $24 Folligen Thickening Shampoo and Folligen ... The post Dr. Forhair Lands At Sephora As K-Beauty’s Haircare Wave Builds appeared first on ", srcDate:"Aug 25", url:"https://www.beautyindependent.com/dr-forhair-sephora-k-beauty-haircare/"},
+  {date:"2026-08-20", outlet:"BeautyMatter", head:"Phoenix Rising: Estée Lauder Goes Indie Mode, Beating Estimates and Ending 3-Year Slump", sum:"Analysis of Estée Lauder's FY2026 results, crediting the return to growth to restructuring, regional autonomy in China, and a focus on skincare and fragrance over large-scale M&A.", srcDate:"Aug 20", url:"https://beautymatter.com/articles/estee-lauder-goes-indie-mode"},
+  {date:"2026-08-20", outlet:"BeautyMatter", head:"Reddit's Communities Are Rewriting Beauty Trends", sum:"Beauty product discovery is shifting from influencer-led trends toward peer recommendations inside Reddit communities, pushing brands toward more personalized, less one-size-fits-all guidance.", srcDate:"Aug 20", url:"https://beautymatter.com/articles/reddits-communities-are-rewriting-beauty-trends"},
+  {date:"2026-07-30", outlet:"Beauty Independent", head:"TSG Acquires Buzzy Body Care Brand Saltair, Extending The Center's Winning Streak", sum:"TSG Consumer acquired a majority stake in body care brand Saltair from beauty incubator The Center, another exit for the brand-building platform. Saltair is projected at roughly $150M in sales this year with a 30% EBITDA margin.", srcDate:"Jul 30", url:"https://www.beautyindependent.com/tsg-acquires-buzzy-body-care-brand-saltair-extending-the-centers-winning-streak/"}
+];
+
+// ——— Render ———
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const daysAgo = d => Math.round((new Date(AS_OF) - new Date(d)) / 864e5);
+/* Dedupe by url: a mis-rotated record present in both arrays must not render twice. */
+const uniq = list => {const seen=new Set();return list.filter(e=>seen.has(e.url)?false:(seen.add(e.url),true));};
+const LIVE  = uniq(EVENTS.filter(e => daysAgo(e.date) <= WINDOW_DAYS && daysAgo(e.date) >= 0));
+const OLDER = uniq(PAST.concat(EVENTS).filter(e => daysAgo(e.date) > WINDOW_DAYS && daysAgo(e.date) <= ARCHIVE_DAYS))
+                .filter(e => !LIVE.some(l => l.url === e.url));
+const ALL = LIVE.concat(OLDER);
+/* The dossier reads the full year, falling back to the visible set if history is empty. */
+const YEAR = uniq(HISTORY.length ? HISTORY.concat(ALL) : ALL);
+const fmtDay = d => new Date(d+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+const ageLabel = d => {const n=daysAgo(d);return n===0?"Today":n===1?"Yesterday":n+" days ago";};
+let state = {cat:"all", sec:"all", geo:"all", co:"all", q:""};
+
+$("#asof").textContent = new Date(AS_OF+"T12:00:00").toLocaleDateString("en-US",{month:"long",day:"numeric"});
+
+/* Ticker: live items when the market is moving. When the 48h window is empty it
+   falls back to the archive, but every borrowed item is stamped with its real age
+   so nothing aged can ever read as "today". */
+function renderTicker(){
+  const bar = $("#ticker");
+  const stale = LIVE.length === 0;
+  const src = (stale ? OLDER : LIVE).slice(0,8);
+  if(!src.length){
+    bar.setAttribute("aria-label","No verified events in the last 48 hours");
+    bar.innerHTML = `<span class="ticker-track"><span class="ticker-item">
+      <span class="tk-co">Market quiet</span><span class="tk-v">no verified monetary events in the last 48 hours</span>
+      </span></span>`;
+    return;
+  }
+  bar.setAttribute("aria-label", stale
+    ? "No events in the last 48 hours — showing the most recent from the archive, each with its age"
+    : "Headline figures from the last 48 hours");
+  const item = e => {
+    const real = e.value !== "—" && e.value !== "Undisclosed";
+    const v = real ? e.value : CATS[e.cat];
+    const dir = /−|-\d|fall|decline|cuts/i.test(e.head) ? " down" : (/jump|rise|raises|up \d|surge/i.test(e.head) ? " up" : "");
+    const age = stale ? `<span class="tk-age">${esc(ageLabel(e.date))}</span>` : "";
+    return `<span class="ticker-item"><span class="tk-co">${esc(e.co)}</span>
+      <span class="tk-v${real?dir:""}">${esc(v)}</span>${age}</span><span class="ticker-sep">/</span>`;
+  };
+  const lead = stale
+    ? `<span class="ticker-item"><span class="tk-co">Quiet · last 48h</span><span class="tk-age">showing earlier stories</span></span><span class="ticker-sep">/</span>`
+    : "";
+  const strip = lead + src.map(item).join("");
+  bar.innerHTML = `<span class="ticker-track">${strip}${strip}</span>`;
+}
+
+function renderKpis(){
+  /* Disclosed value spans the full 7-day record: a 48h-only figure reads $0.00B on
+     any quiet day while real deals sit in the archive, unsurfaced. */
+  const wk = ALL.reduce((s,e)=>s+(e.val||0),0);
+  const live48 = LIVE.reduce((s,e)=>s+(e.val||0),0);
+  const active = new Set(), offList = new Set();
+  ALL.forEach(e=>{ WATCH.includes(e.co)?active.add(e.co):offList.add(e.co);
+    (e.also||[]).forEach(a=>{if(WATCH.includes(a))active.add(a);}); });
+  const today = LIVE.filter(e=>daysAgo(e.date)===0).length;
+  const tiles=[
+    {fig:LIVE.length, lab:"Fresh · 48h", sub:"verified dates only"},
+    {fig:today, lab:"New today · 24h", sub:"scope of your alert"},
+    {fig:"$"+wk.toFixed(2)+"B", lab:"Disclosed value · 7d",
+     sub:live48>0?"$"+live48.toFixed(2)+"B of it in the last 48h":"none disclosed in the last 48h"},
+    {fig:active.size+"/"+WATCH.length, lab:"Houses in play",
+     sub:offList.size?`watchlist, 7d · +${offList.size} off-list`:"watchlist active, 7d"}
+  ];
+  $("#kpis").innerHTML = tiles.map(t=>`<div class="kpi">
+    <div class="fig">${esc(t.fig)}</div><div class="lab">${esc(t.lab)}</div>
+    <div class="sub">${esc(t.sub)}</div></div>`).join("");
+}
+function counts(field){const c={};ALL.forEach(e=>{c[e[field]]=(c[e[field]]||0)+1;});return c;}
+
+function renderSectors(){
+  const c=counts("sec");
+  const mk=(key,label)=>{
+    const n=key==="all"?ALL.length:(c[key]||0);
+    const dis=key!=="all"&&n===0?" disabled":"";
+    return `<button class="pill" data-sec="${esc(key)}" aria-pressed="${state.sec===key}"${dis}>
+      ${esc(label)}<span class="n">${n}</span></button>`;
+  };
+  $("#sectors").innerHTML = mk("all","All")+SECTORS.map(s=>mk(s,s)).join("");
+  $("#sectors").querySelectorAll(".pill").forEach(b=>b.onclick=()=>{
+    state.sec = state.sec===b.dataset.sec?"all":b.dataset.sec; render();});
+}
+function renderCats(){
+  const c=counts("cat");
+  const mk=(key,label)=>`<button class="pill" data-cat="${esc(key)}" aria-pressed="${state.cat===key}">
+    ${esc(label)}<span class="n">${key==="all"?ALL.length:(c[key]||0)}</span></button>`;
+  $("#cats").innerHTML = mk("all","All")+Object.entries(CATS).map(([k,l])=>mk(k,l)).join("");
+  $("#cats").querySelectorAll(".pill").forEach(b=>b.onclick=()=>{
+    state.cat = state.cat===b.dataset.cat?"all":b.dataset.cat; render();});
+}
+function renderSelects(){
+  $("#geoFilter").innerHTML = ['<option value="all">All regions</option>']
+    .concat(GEOS.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`)).join("");
+  /* Off-watchlist names appear in the record too — list them so every company
+     with history is reachable from the picker, not just the 70 houses. */
+  const extra = [...new Set(YEAR.flatMap(e=>[e.co,...(e.also||[])]))]
+    .filter(c=>c && !WATCH.includes(c)).sort((a,b)=>a.localeCompare(b));
+  $("#coFilter").innerHTML = ['<option value="all">All companies</option>']
+    .concat(WATCH.map(w=>`<option value="${esc(w)}">${esc(w)}</option>`))
+    .concat(extra.length?[`<option disabled>— also in the record —</option>`]:[])
+    .concat(extra.map(w=>`<option value="${esc(w)}">${esc(w)}</option>`)).join("");
+  $("#geoFilter").onchange=e=>{state.geo=e.target.value;render();};
+  /* Picking a company from the dropdown opens its 12-month record directly —
+     no separate button to hunt for. */
+  $("#coFilter").onchange=e=>{
+    state.co=e.target.value; render();
+    if(state.co!=="all") openDossier(state.co);
+  };
+  $("#q").addEventListener("input",e=>{state.q=e.target.value;render();});
+  $("#reset").onclick=()=>{
+    state={cat:"all",sec:"all",geo:"all",co:"all",q:""};
+    $("#q").value="";$("#geoFilter").value="all";$("#coFilter").value="all";render();};
+}
+function match(e){
+  if(state.cat!=="all"&&e.cat!==state.cat)return false;
+  if(state.sec!=="all"&&e.sec!==state.sec)return false;
+  if(state.geo!=="all"&&e.geo!==state.geo)return false;
+  if(state.co!=="all"&&e.co!==state.co&&!(e.also||[]).includes(state.co))return false;
+  if(state.q){const h=(e.co+" "+(e.also||[]).join(" ")+" "+e.head+" "+e.sum+" "+e.sec+" "+e.geo).toLowerCase();
+    if(!h.includes(state.q.toLowerCase()))return false;}
+  return true;
+}
+function card(e){
+  const d=daysAgo(e.date);
+  const when=d===0?'<span class="when today">Today</span>':'<span class="when">Yesterday</span>';
+  const na=(e.value==="—"||e.value==="Undisclosed");
+  const amt=na?`<span class="amount na">${e.value==="—"?"No sum disclosed":"Undisclosed"}</span>`
+              :`<span class="amount">${esc(e.value)}</span>`;
+  const also=(e.also||[]).length?` <span class="also">with ${esc(e.also.join(", "))}</span>`:"";
+  return `<article class="card${e.hi?" hi":""}">
+    <div class="tags">
+      <span class="tag-sec">${esc(e.sec)}</span><span class="tag-dot"></span>
+      <span class="tag-m">${esc(CAT_FULL[e.cat])}</span><span class="tag-dot"></span>
+      <span class="tag-m">${esc(e.geo)}</span>
+      ${e.hi?'<span class="tag-major">Major move</span>':""}
+      ${e.rumor?'<span class="tag-rep">Reported</span>':""}
+      ${when}
+    </div>
+    <h3 class="headline">${esc(e.head)}</h3>
+    <div class="company"><button class="co-link" data-dossier="${esc(e.co)}"
+      aria-haspopup="dialog" title="See every ${esc(e.co)} story from the last 12 months">${esc(e.co)}</button>${also}</div>
+    <p class="card-sum">${esc(e.sum)}</p>
+    <div class="card-foot">
+      ${amt}
+      <span class="srcline"><span class="ver">✓ Verified ${esc(e.srcDate)}</span>
+      <a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.src)} ↗</a></span>
+    </div>
+  </article>`;
+}
+function row(e){
+  const na=(e.value==="—"||e.value==="Undisclosed");
+  const val=na?`<td class="t-val na">${e.value==="—"?"—":"Undisc."}</td>`
+              :`<td class="t-val">${esc(e.value)}</td>`;
+  const rep=e.rumor?' <span class="tag-rep">Reported</span>':"";
+  return `<tr>
+    <td class="t-date">${esc(e.srcDate)} · ${daysAgo(e.date)}d</td>
+    <td class="t-co"><button class="co-link" data-dossier="${esc(e.co)}"
+      aria-haspopup="dialog" title="Open the 12-month dossier for ${esc(e.co)}">${esc(e.co)}</button></td>
+    <td class="t-sec">${esc(e.sec)}</td>
+    <td class="t-head"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.head)}</a>${rep}</td>
+    ${val}
+  </tr>`;
+}
+function pressCard(e){
+  const when=daysAgo(e.date)===0?'<span class="when today">Today</span>':'<span class="when">Yesterday</span>';
+  return `<article class="press-card">
+    <div class="tags">
+      <span class="tag-sec">${esc(e.outlet)}</span>${when}
+    </div>
+    <h3 class="headline">${esc(e.head)}</h3>
+    <p class="card-sum">${esc(e.sum)}</p>
+    <div class="card-foot">
+      <span></span>
+      <span class="srcline"><span class="ver">✓ Verified ${esc(e.srcDate)}</span>
+      <a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.outlet)} ↗</a></span>
+    </div>
+  </article>`;
+}
+function renderPress(){
+  const live = MEDIA.filter(e=>{const d=daysAgo(e.date); return d>=0 && d<=WINDOW_DAYS;})
+    .sort((a,b)=>new Date(b.date)-new Date(a.date));
+  $("#pressFeed").innerHTML = live.length ? live.map(pressCard).join("")
+    : `<div class="empty">No verified trade-press stories in the last 48 hours.</div>`;
+  $("#pressCount").textContent = `${live.length} ${live.length===1?"story":"stories"} across ${MEDIA_HOUSES.length} outlets`;
+}
+function renderHouses(){
+  const tally = list => {const c={};list.forEach(e=>{if(WATCH.includes(e.co))c[e.co]=(c[e.co]||0)+1;
+    (e.also||[]).forEach(a=>{if(WATCH.includes(a))c[a]=(c[a]||0)+1;});});return c;};
+  const c=tally(ALL), y=tally(YEAR);
+  const companyTiles = WATCH.map(w=>{const n=c[w]||0, yn=y[w]||0;
+    return `<button class="house${n?" on":" quiet"}" data-dossier="${esc(w)}"
+      aria-current="${state.co===w?"true":"false"}" aria-haspopup="dialog"
+      title="${esc(w)} — ${yn} ${yn===1?"story":"stories"} on record in the last 12 months">
+      <span class="hn">${esc(w)}</span><span class="hc">${n||"·"}</span></button>`;}).join("");
+  const pressTiles = MEDIA_HOUSES.map(o=>{
+    const items = MEDIA.filter(e=>e.outlet===o);
+    const n7 = items.filter(e=>daysAgo(e.date)<=ARCHIVE_DAYS).length;
+    return `<button class="house press${n7?" on":" quiet"}" data-dossier="${esc(o)}"
+      aria-current="${state.co===o?"true":"false"}" aria-haspopup="dialog"
+      title="${esc(o)} — ${items.length} ${items.length===1?"story":"stories"} on record in the last 12 months">
+      <span class="hn">${esc(o)}</span><span class="hc">${n7||"·"}</span></button>`;}).join("");
+  $("#houses").innerHTML = companyTiles
+    + `<div class="press-divider">Trade Press</div>` + pressTiles;
+}
+function label(){
+  const p=[];
+  if(state.sec!=="all")p.push(state.sec);
+  if(state.cat!=="all")p.push(CAT_FULL[state.cat]);
+  if(state.geo!=="all")p.push(state.geo);
+  if(state.co!=="all")p.push(state.co);
+  if(state.q)p.push(`“${state.q}”`);
+  return p;
+}
+/* ——— Company / trade-press dossier: every verified story for one house across 12 months ——— */
+let dossierPrev = null;
+function isMediaHouse(id){ return MEDIA_HOUSES.includes(id); }
+function dossierFor(co){
+  if(isMediaHouse(co)) return MEDIA.filter(e=>e.outlet===co).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  return YEAR.filter(e => e.co===co || (e.also||[]).includes(co))
+             .sort((a,b)=> new Date(b.date)-new Date(a.date));
+}
+function openDossier(co){
+  const media = isMediaHouse(co);
+  const rows = dossierFor(co);
+  $("#dossierName").textContent = co;
+  $("#dossierKind").textContent = media ? "Trade press dossier · rolling 12 months" : "Company dossier · rolling 12 months";
+  $("#dossierFilter").style.display = media ? "none" : "";
+
+  if(media){
+    const n7 = rows.filter(e=>daysAgo(e.date)<=ARCHIVE_DAYS).length;
+    const n1 = rows.filter(e=>daysAgo(e.date)<=WINDOW_DAYS).length;
+    $("#dossierSub").textContent = rows.length
+      ? `${rows.length} verified ${rows.length===1?"story":"stories"} · ${fmtDay(rows[rows.length-1].date)} — ${fmtDay(rows[0].date)}`
+      : "No verified stories recorded for this outlet in the last 12 months.";
+    $("#dossierStats").innerHTML = [
+      {f:rows.length, l:"Stories · 12m"},
+      {f:n7, l:"Stories · 7d"},
+      {f:n1, l:"Stories · 48h"},
+      {f:rows.length?fmtDay(rows[0].date):"—", l:"Most recent"}
+    ].map(s=>`<div class="dstat"><div class="f">${esc(s.f)}</div><div class="l">${esc(s.l)}</div></div>`).join("");
+
+    let html="", month="";
+    rows.forEach(e=>{
+      const m = new Date(e.date+"T12:00:00").toLocaleDateString("en-US",{month:"long",year:"numeric"});
+      if(m!==month){ month=m; html += `<div class="dmonth">${esc(m)}</div>`; }
+      html += `<div class="ditem">
+        <div class="dwhen">${esc(fmtDay(e.date))}</div>
+        <div class="dmain">
+          <p class="dhead"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.head)}</a></p>
+          <p class="card-sum" style="margin-top:8px">${esc(e.sum)}</p>
+        </div>
+      </div>`;
+    });
+    $("#dossierBody").innerHTML = rows.length ? html
+      : `<div class="empty">Nothing recorded for ${esc(co)} in the rolling 12-month window.</div>`;
+  } else {
+    const val = rows.reduce((s,e)=>s+(e.val||0),0);
+    const byCat = {}; rows.forEach(e=>{byCat[e.cat]=(byCat[e.cat]||0)+1;});
+    const top = Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0];
+    $("#dossierSub").textContent = rows.length
+      ? `${rows.length} verified ${rows.length===1?"story":"stories"} · ${fmtDay(rows[rows.length-1].date)} — ${fmtDay(rows[0].date)}`
+      : "No verified stories recorded for this house in the last 12 months.";
+    $("#dossierStats").innerHTML = [
+      {f:rows.length, l:"Stories · 12m"},
+      {f:"$"+val.toFixed(2)+"B", l:"Disclosed value"},
+      {f:rows.filter(e=>e.hi).length, l:"Major moves"},
+      {f:top?CATS[top[0]]:"—", l:"Most frequent"}
+    ].map(s=>`<div class="dstat"><div class="f">${esc(s.f)}</div><div class="l">${esc(s.l)}</div></div>`).join("");
+
+    let html="", month="";
+    rows.forEach(e=>{
+      const m = new Date(e.date+"T12:00:00").toLocaleDateString("en-US",{month:"long",year:"numeric"});
+      if(m!==month){ month=m; html += `<div class="dmonth">${esc(m)}</div>`; }
+      const na=(e.value==="—"||e.value==="Undisclosed");
+      const partner=(e.also||[]).length?`<span>with ${esc(e.also.join(", "))}</span>`:"";
+      html += `<div class="ditem">
+        <div class="dwhen">${esc(fmtDay(e.date))}</div>
+        <div class="dmain">
+          <p class="dhead"><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.head)}</a></p>
+          <div class="dmeta">
+            <span>${esc(CAT_FULL[e.cat])}</span><span class="tag-dot"></span>
+            <span>${esc(e.sec)}</span><span class="tag-dot"></span><span>${esc(e.geo)}</span>
+            ${e.hi?'<span class="tag-major">Major</span>':""}
+            ${e.rumor?'<span class="tag-rep">Reported</span>':""}
+            ${partner}<span class="tag-dot"></span><span>${esc(e.src)}</span>
+          </div>
+        </div>
+        <div class="dval${na?" na":""}">${na?(e.value==="—"?"—":"Undisc."):esc(e.value)}</div>
+      </div>`;
+    });
+    $("#dossierBody").innerHTML = rows.length ? html
+      : `<div class="empty">Nothing recorded for ${esc(co)} in the rolling 12-month window.</div>`;
+    $("#dossierFilter").onclick = ()=>{
+      state.co=co; $("#coFilter").value=co; closeDossier(); render();
+      document.querySelector(".toolbar").scrollIntoView({behavior:"smooth",block:"start"});
+    };
+  }
+  dossierPrev = document.activeElement;
+  $("#dossier").hidden = false;
+  document.body.style.overflow = "hidden";
+  $("#dossierClose").focus();
+}
+function closeDossier(){
+  $("#dossier").hidden = true;
+  document.body.style.overflow = "";
+  if(dossierPrev && dossierPrev.focus) dossierPrev.focus();
+}
+document.addEventListener("click", ev=>{
+  const t = ev.target.closest("[data-dossier]");
+  if(t){ ev.preventDefault(); openDossier(t.dataset.dossier); return; }
+  if(ev.target.closest("[data-close]")) closeDossier();
+});
+$("#dossierClose").onclick = closeDossier;
+document.addEventListener("keydown", ev=>{
+  const open = !$("#dossier").hidden;
+  if(!open) return;
+  if(ev.key === "Escape"){ closeDossier(); return; }
+  if(ev.key !== "Tab") return;
+  const f = [...$("#dossier").querySelectorAll('a[href],button')].filter(x=>x.offsetParent!==null);
+  if(!f.length) return;
+  const first=f[0], last=f[f.length-1];
+  if(ev.shiftKey && document.activeElement===first){ ev.preventDefault(); last.focus(); }
+  else if(!ev.shiftKey && document.activeElement===last){ ev.preventDefault(); first.focus(); }
+});
+
+function render(){
+  const rows=LIVE.filter(match).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  $("#feed").innerHTML = rows.length?rows.map(card).join("")
+    :`<div class="empty">Nothing in the last 48 hours matches this selection — a quiet market, not missing coverage.</div>`;
+  const parts=label();
+  $("#countLine").textContent = `${rows.length} ${rows.length===1?"story":"stories"}`+(parts.length?" — "+parts.join(" · "):", all sectors");
+
+  const old=OLDER.filter(match).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  $("#archiveWrap").innerHTML = old.length
+    ? `<div class="tablewrap"><table class="arch">
+        <thead><tr><th>When</th><th>House</th><th>Sector</th><th>Story</th><th>Value</th></tr></thead>
+        <tbody>${old.map(row).join("")}</tbody></table></div>`
+    : `<div class="empty">Nothing earlier this week matches this selection.</div>`;
+  $("#archCount").textContent = `${old.length} in the two-to-seven-day window — kept for context, retired after seven days.`;
+
+  $("#reset").hidden = parts.length===0;
+  renderSectors();renderCats();renderHouses();
+}
+$("#watchMeta").textContent = `Watchlist · ${WATCH.length} + ${MEDIA_HOUSES.length} press`;
+renderTicker();renderKpis();renderSelects();renderPress();render();
+</script>
+
+</body>
+</html>
